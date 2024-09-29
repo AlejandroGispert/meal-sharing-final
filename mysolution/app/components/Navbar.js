@@ -97,7 +97,7 @@ export default function Navbar() {
               </Link>
             </Button>
             <Button color="inherit" sx={{ mx: 1 }}>
-              <Link href="/salsa-cubana" passHref>
+              <Link href="/meals" passHref>
                 Meals
               </Link>
             </Button>

@@ -12,51 +12,48 @@ import Box from "@mui/material/Box";
 import styles from "../page.module.css";
 import { Grid2 } from "@mui/material";
 // Dummy data for cards
-const courses = [
+const meals = [
   {
-    header: "6weeks",
+    header: "sushi",
     title: "course",
     price: "kr.990",
     image: "/icons/bachata.svg",
   },
   {
-    header: "Student",
+    header: "pizza",
     title: "under 20",
     price: "kr.790",
     image: "/icons/student.svg",
   },
   {
-    header: "PunchCard",
+    header: "meat",
     title: "7 clips",
     price: "kr.1200",
     image: "/icons/salsacubana.svg",
   },
   {
-    header: "Drop in",
+    header: "tenderloin",
     title: "per class",
     price: "kr.200",
     image: "icons/jazmodern.svg",
   },
 ];
 
-export default function Courses() {
+export default function Meals() {
   const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = "/files/list-of-prices.pdf"; // Path to the file in the public folder
-    link.download = "list of prices.pdf"; // Name of the downloaded file
-    link.click(); // Programmatically click the link
+    alert("nothing");
   };
 
   return (
     <div>
       <div className={styles.header}>
-        <h1>Courses</h1>
+        <h1>Meals</h1>
       </div>
 
-      {/* Grid for the courses */}
+      {/* Grid for the Meals */}
       <Box sx={{ flexGrow: 1, padding: 2 }}>
         <Grid2 className={styles.grid} container spacing={6}>
-          {courses.map((course, index) => (
+          {meals.map((course, index) => (
             <Grid2 item xs={12} sm={6} md={3} key={index}>
               <Card sx={{ textAlign: "center", padding: 2 }}>
                 <Typography

@@ -11,6 +11,23 @@
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
+    ],
+    "/salsa-cubana/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/salsa-cubana/page.js"
+    ],
+    "/bachata/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/bachata/page.css",
+      "static/chunks/app/bachata/page.js"
+    ],
+    "/meals/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/meals/page.css",
+      "static/chunks/app/meals/page.js"
     ]
   }
 }
