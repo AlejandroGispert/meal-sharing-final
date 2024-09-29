@@ -47,7 +47,7 @@ export default function Navbar() {
           "Home",
           "Meals",
           "Salsa Cubana",
-          "Become a host",
+          "Become host",
           "Reviews",
           "Media",
           "About",
@@ -102,7 +102,7 @@ export default function Navbar() {
               </Link>
             </Button>
             <Button color="inherit" sx={{ mx: 1 }}>
-              <Link href="/bachata" passHref>
+              <Link href="/become-host" passHref>
                 Become a host
               </Link>
             </Button>

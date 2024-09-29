@@ -1,7 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
-  "/meals/page": "app/meals/page.js",
-  "/salsa-cubana/page": "app/salsa-cubana/page.js",
-  "/about/page": "app/about/page.js"
+  "/home/page": "app/home/page.js",
+  "/become-host/page": "app/become-host/page.js",
+  "/about/page": "app/about/page.js",
+  "/meals/page": "app/meals/page.js"
 }

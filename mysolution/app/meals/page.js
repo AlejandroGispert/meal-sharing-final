@@ -10,7 +10,8 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import styles from "../page.module.css";
-import { Grid2 } from "@mui/material"; // Make sure you're importing Grid2 correctly
+import { Grid2, Modal } from "@mui/material"; // Make sure you're importing Grid2 correctly
+import TextField from "@mui/material/TextField";
 
 const fetchData = async () => {
   const response = await fetch("http://127.0.0.1:3001/all-meals");
@@ -22,6 +23,16 @@ const fetchData = async () => {
 export default function Meals() {
   const [fetchedMeals, setMeals] = useState([]);
 
+  const [inputValue, setInputValue] = useState("");
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleClick = () => {
+    alert("Button clicked!");
+  };
   const handleDownload = () => {
     alert("nothing");
   };
@@ -39,13 +50,56 @@ export default function Meals() {
     getData();
   }, []);
 
+  const handleChangeInput = (event) => {
+    setInputValue(event.target.value);
+  };
+
   return (
     <div>
       <div className={styles.header}>
-        <h1>Meals</h1>
+        <TextField
+          label="Search meal"
+          variant="outlined"
+          value={inputValue}
+          onChange={handleChangeInput}
+        >
+          <p>Your input{inputValue}</p>
+        </TextField>
       </div>
-
-      {/* Grid for the Meals */}
+      {/* The Modal component */}
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id="simple-modal-title" variant="h6" component="h2">
+            Simple Modal
+          </Typography>
+          <Typography id="simple-modal-description" sx={{ mt: 2 }}>
+            This is a simple modal example using Material-UI in a Next.js
+            project.
+          </Typography>
+          {/* Button to close the modal */}
+          <Button onClick={handleCloseModal} variant="outlined" sx={{ mt: 2 }}>
+            Close
+          </Button>
+        </Box>
+      </Modal>
+      ;{/* Grid for the Meals */}
       <Box sx={{ flexGrow: 1, padding: 2 }}>
         <Grid2 className={styles.grid} container spacing={6}>
           {fetchedMeals.length > 0 ? (
@@ -75,6 +129,13 @@ export default function Meals() {
                       Price: {meal.price}
                     </Typography>
                   </CardContent>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleOpenModal}
+                  >
+                    more info {meal.id}
+                  </Button>
                 </Card>
               </Grid2>
             ))
@@ -89,19 +150,8 @@ export default function Meals() {
           )}
         </Grid2>
       </Box>
-
       <br />
       <br />
-      <div className={styles.courseButtonContainer}>
-        <Button
-          className={styles.courseButton}
-          variant="contained"
-          color="primary"
-          onClick={handleDownload}
-        >
-          Download Pdf file with all offers
-        </Button>
-      </div>
     </div>
   );
 }

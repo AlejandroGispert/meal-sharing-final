@@ -34,7 +34,7 @@ export default function Home() {
         video.classList.remove(styles.fadeOut);
         video.currentTime = 0; // Reset video to start
         video.play(); // Play again
-      }, 500); // Match the fade-out duration
+      }, 1500); // Match the fade-out duration
     };
 
     // Event listener for video end
@@ -64,8 +64,7 @@ export default function Home() {
           aria-label="An ai generated video of a delitious meal"
           poster="/images/thumbnail.png" // Optimized thumbnail image
         >
-          <source src="/videos/meal1.mp4" type="video/mp4" />
-          <source src="/videos/meal1.webm" type="video/webm" />{" "}
+          <source src="/videos/meal2.mp4" type="video/mp4" />
           {/* Fallback format */}
           Your browser does not support the video tag.
         </video>
