@@ -83,9 +83,9 @@ export default function Home() {
         >
           <p>Your input{inputValue}</p>
         </TextField> */}
-        <Button variant="contained" color="primary" onClick={handleClick}>
+        {/* <Button variant="contained" color="primary" onClick={handleClick}>
           Get Started
-        </Button>
+        </Button> */}
       </Box>
 
       <Box className={styles.transcript}>
