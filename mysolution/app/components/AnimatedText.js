@@ -1,8 +1,6 @@
-// components/AnimatedText.js
 "use client";
 import React, { useState, useEffect } from "react";
 import styles from "../page.module.css";
-// components/AnimatedText.js
 
 export default function AnimatedText() {
   const [activeWord, setActiveWord] = useState("salsa"); // Initialize the first word
@@ -15,7 +13,7 @@ export default function AnimatedText() {
       // Cycle through the words
       currentWordIndex = (currentWordIndex + 1) % words.length;
       setActiveWord(words[currentWordIndex]);
-    }, 1000); // Switch every 1 second
+    }, 2000); // Switch every 1 second
 
     return () => clearInterval(interval); // Clear interval on unmount
   }, []);

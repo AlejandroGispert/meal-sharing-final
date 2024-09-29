@@ -178,7 +178,7 @@
   transform: scale(1.5);
 }
 .homeTextFrontContainer {
-  margin-top: 200px;
+  margin-top: 50px;
   font-size: 6rem; /* Base font size for the container */
   font-family: "Salsa", sans-serif;
   display: flex;

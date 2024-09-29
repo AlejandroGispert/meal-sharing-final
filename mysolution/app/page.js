@@ -60,12 +60,12 @@ export default function Home() {
           autoPlay
           muted
           playsInline
-          title="Promo video of Salsa Casino Dans school"
-          aria-label="Promo video of Salsa Casino Dans school"
+          title="meal"
+          aria-label="An ai generated video of a delitious meal"
           poster="/images/thumbnail.png" // Optimized thumbnail image
         >
-          <source src="/videos/promo-short.mp4" type="video/mp4" />
-          <source src="/videos/promo-short.webm" type="video/webm" />{" "}
+          <source src="/videos/meal1.mp4" type="video/mp4" />
+          <source src="/videos/meal1.webm" type="video/webm" />{" "}
           {/* Fallback format */}
           Your browser does not support the video tag.
         </video>
