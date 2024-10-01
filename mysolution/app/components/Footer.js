@@ -15,19 +15,19 @@ export default function Footer() {
       }}
     >
       <Container maxWidth="sm">
+        <iframe
+          title="Tons of food lost or wasted"
+          src="https://www.theworldcounts.com/embeds/counters/101?background_color=white&color=black&font_family=%22Helvetica+Neue%22%2C+Arial%2C+sans-serif&font_size=14"
+          style={{ border: "none" }}
+          height="100"
+          width="300"
+        ></iframe>
         <Typography variant="body1">Meal Sharing App Denmark</Typography>
         <Typography variant="body2" color="text.secondary">
           {"© "}
           {new Date().getFullYear()} created by Alejandro Gispert. All rights
           reserved.
         </Typography>
-        <iframe
-          title="Earth running out of food"
-          src="https://www.theworldcounts.com/embeds/counters/112?background_color=white&color=black&font_family=%22Helvetica+Neue%22%2C+Arial%2C+sans-serif&font_size=14"
-          style="border: none"
-          height="100"
-          width="300"
-        ></iframe>
       </Container>
     </Box>
   );

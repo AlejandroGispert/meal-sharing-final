@@ -14,14 +14,18 @@ import { Grid2, Modal } from "@mui/material"; // Make sure you're importing Grid
 import TextField from "@mui/material/TextField";
 
 const fetchData = async () => {
-  const response = await fetch("http://127.0.0.1:3001/all-meals");
+  const response = await fetch(
+    "https://meal-sharing-final-backend.onrender.com/meals/"
+  );
   const data = await response.json();
   console.log(data);
   return data;
 };
 
 const fetchDataSingle = async (mealId) => {
-  const response = await fetch(`http://127.0.0.1:3001/meals/${mealId}`);
+  const response = await fetch(
+    `https://meal-sharing-final-backend.onrender.com/meals/${mealId}`
+  );
   const data = await response.json();
   console.log(data);
   return data;
