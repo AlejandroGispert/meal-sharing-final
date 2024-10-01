@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import styles from "../page.module.css";
 import { Grid2, Modal } from "@mui/material"; // Make sure you're importing Grid2 correctly
 import TextField from "@mui/material/TextField";
-
+import Image from "next/image";
 const fetchData = async () => {
   const response = await fetch(
     "https://meal-sharing-final-backend.onrender.com/meals/"
@@ -102,6 +102,12 @@ export default function Meals() {
               <Typography id="simple-modal-title" variant="h6" component="h2">
                 Meal: {fetchedSingleMeal.title}
               </Typography>
+              <Image
+                alt={fetchedSingleMeal.title}
+                src={fetchedSingleMeal.image_url}
+                width={300}
+                height={300}
+              />
               <Typography id="simple-modal-description" sx={{ mt: 2 }}>
                 Description: {fetchedSingleMeal.description}
               </Typography>
@@ -132,7 +138,7 @@ export default function Meals() {
                   </Typography>
                   <Avatar
                     alt={meal.title}
-                    src={meal.image}
+                    src={meal.image_url}
                     sx={{ width: 100, height: 100, margin: "auto" }}
                   />
                   <CardContent>

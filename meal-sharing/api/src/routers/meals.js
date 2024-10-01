@@ -6,7 +6,9 @@ const mealsRouter = express.Router();
 
 mealsRouter.get("/", async (req, res) => {
   try {
-    let query = knex.select("*").from("Meal");
+    let query = knex("Meal")
+      .select("Meal.*", "images.image_url") // Select all fields from Meal and image_url from images
+      .leftJoin("images", "Meal.image_id", "images.id");
 
     const maxPriceApi = parseFloat(req.query.maxPrice);
     const availableReservationsApi = req.query.availableReservations === "true";
