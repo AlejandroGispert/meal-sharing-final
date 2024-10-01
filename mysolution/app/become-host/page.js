@@ -7,7 +7,7 @@ import Image from "next/image";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
+import Map from "../components/Map";
 export default function BecomeHost() {
   const videoRef = useRef(null);
 
@@ -37,14 +37,12 @@ export default function BecomeHost() {
         <meta charSet="UTF-8" />
       </Head>
 
-      <main className={styles.main}>
+      <main className={styles.becomeHostSection}>
+        <Map />
         <Container maxWidth="md">
-          <Box
-            className={styles.content}
-            sx={{ textAlign: "center", mb: 4, padding: 7 }}
-          ></Box>
+          <Box className={styles.content}></Box>
 
-          <article lang="no" className={styles.bachataSection}>
+          <article lang="no">
             <section>
               <Typography variant="body1">
                 Here is how to become a host

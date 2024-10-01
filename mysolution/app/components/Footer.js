@@ -21,6 +21,13 @@ export default function Footer() {
           {new Date().getFullYear()} created by Alejandro Gispert. All rights
           reserved.
         </Typography>
+        <iframe
+          title="Earth running out of food"
+          src="https://www.theworldcounts.com/embeds/counters/112?background_color=white&color=black&font_family=%22Helvetica+Neue%22%2C+Arial%2C+sans-serif&font_size=14"
+          style="border: none"
+          height="100"
+          width="300"
+        ></iframe>
       </Container>
     </Box>
   );

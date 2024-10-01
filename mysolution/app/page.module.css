@@ -144,12 +144,11 @@
   height: fit-content;
 }
 
-.bachataSection {
-  position: absolute;
-  top: 400px;
-  left: 40px;
-  color: yellow;
-  padding: 100px;
+.becomeHostSection {
+  background-color: #16f5b7;
+  text-align: center;
+  margin-bottom: 4px;
+  padding: 7px;
 }
 
 .mediaBox {
@@ -189,6 +188,11 @@
 .title {
   font-family: "Salsa", sans-serif;
 }
+
+.map {
+  width: 50%;
+  height: 800px;
+}
 @media screen and (max-width: 430px) {
   .backgroundVideo {
     width: 100vw;
@@ -206,7 +210,7 @@
   .imagesContainers {
     width: 50vw;
   }
-  .bachataSection {
+  .becomeHostSection {
     position: absolute;
     top: 190px;
     left: 2px;

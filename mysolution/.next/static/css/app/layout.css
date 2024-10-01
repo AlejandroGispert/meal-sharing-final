@@ -149,12 +149,11 @@
   height: fit-content;
 }
 
-.page_bachataSection__u_gm7 {
-  position: absolute;
-  top: 400px;
-  left: 40px;
-  color: yellow;
-  padding: 100px;
+.page_becomeHostSection__Dqkx_ {
+  background-color: #16f5b7;
+  text-align: center;
+  margin-bottom: 4px;
+  padding: 7px;
 }
 
 .page_mediaBox__VTlbq {
@@ -194,6 +193,11 @@
 .page_title__po7na {
   font-family: "Salsa", sans-serif;
 }
+
+.page_map__8FF97 {
+  width: 50%;
+  height: 800px;
+}
 @media screen and (max-width: 430px) {
   .page_backgroundVideo__EjNBN {
     width: 100vw;
@@ -211,7 +215,7 @@
   .page_imagesContainers__dIZiD {
     width: 50vw;
   }
-  .page_bachataSection__u_gm7 {
+  .page_becomeHostSection__Dqkx_ {
     position: absolute;
     top: 190px;
     left: 2px;

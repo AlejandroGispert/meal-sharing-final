@@ -20,28 +20,36 @@ const fetchData = async () => {
   return data;
 };
 
+const fetchDataSingle = async (mealId) => {
+  const response = await fetch(`http://127.0.0.1:3001/meals/${mealId}`);
+  const data = await response.json();
+  console.log(data);
+  return data;
+};
+
 export default function Meals() {
   const [fetchedMeals, setMeals] = useState([]);
-
+  const [fetchedSingleMeal, setSingleMeal] = useState(null);
   const [inputValue, setInputValue] = useState("");
-
   const [openModal, setOpenModal] = useState(false);
 
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenModal = async (mealId) => {
+    try {
+      const meal = await fetchDataSingle(mealId);
+      setSingleMeal(meal);
+      setOpenModal(true);
+    } catch (error) {
+      console.error("Error fetching single meal:", error);
+    }
+  };
 
-  const handleClick = () => {
-    alert("Button clicked!");
-  };
-  const handleDownload = () => {
-    alert("nothing");
-  };
+  const handleCloseModal = () => setOpenModal(false);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const data = await fetchData();
-        setMeals(data[0]);
+        setMeals(data); // Set the fetched meals array directly
       } catch (error) {
         console.error("Error fetching meals:", error);
       }
@@ -62,10 +70,9 @@ export default function Meals() {
           variant="outlined"
           value={inputValue}
           onChange={handleChangeInput}
-        >
-          <p>Your input{inputValue}</p>
-        </TextField>
+        />
       </div>
+
       {/* The Modal component */}
       <Modal
         open={openModal}
@@ -86,20 +93,26 @@ export default function Meals() {
             p: 4,
           }}
         >
-          <Typography id="simple-modal-title" variant="h6" component="h2">
-            Simple Modal
-          </Typography>
-          <Typography id="simple-modal-description" sx={{ mt: 2 }}>
-            This is a simple modal example using Material-UI in a Next.js
-            project.
-          </Typography>
-          {/* Button to close the modal */}
+          {fetchedSingleMeal ? (
+            <>
+              <Typography id="simple-modal-title" variant="h6" component="h2">
+                {fetchedSingleMeal.title}
+              </Typography>
+              <Typography id="simple-modal-description" sx={{ mt: 2 }}>
+                {fetchedSingleMeal.description}
+              </Typography>
+              <Typography>Price: {fetchedSingleMeal.price}</Typography>
+            </>
+          ) : (
+            <Typography>Loading...</Typography>
+          )}
           <Button onClick={handleCloseModal} variant="outlined" sx={{ mt: 2 }}>
             Close
           </Button>
         </Box>
       </Modal>
-      ;{/* Grid for the Meals */}
+
+      {/* Grid for the Meals */}
       <Box sx={{ flexGrow: 1, padding: 2 }}>
         <Grid2 className={styles.grid} container spacing={6}>
           {fetchedMeals.length > 0 ? (
@@ -132,9 +145,9 @@ export default function Meals() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleOpenModal}
+                    onClick={() => handleOpenModal(meal.id)} // Fix here: Pass function to onClick
                   >
-                    more info {meal.id}
+                    More info {meal.id}
                   </Button>
                 </Card>
               </Grid2>
@@ -150,8 +163,6 @@ export default function Meals() {
           )}
         </Grid2>
       </Box>
-      <br />
-      <br />
     </div>
   );
 }

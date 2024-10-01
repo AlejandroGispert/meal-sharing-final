@@ -18,8 +18,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Salsa Casino Dans",
-  description: "Drammen Salsa Skole",
+  title: "Meal Sharing App",
+  description: "an app for sharing meals",
 };
 
 export default function RootLayout({ children }) {
