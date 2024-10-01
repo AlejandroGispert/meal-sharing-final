@@ -105,7 +105,11 @@ mealsRouter.post("/", async (req, res) => {
 mealsRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
 
-  const fetchedItem = await knex.select("*").from("Meal").where("id", id);
+  // const fetchedItem = await knex.select("*").from("Meal").where("id", id);
+  const fetchedItem = await knex("Meal")
+    .select("Meal.*", "images.image_url") // Select fields from both tables
+    .leftJoin("images", "Meal.image_id", "images.id") // Perform a LEFT JOIN
+    .where("Meal.id", id);
 
   if (fetchedItem.length > 0) {
     res.send(fetchedItem);

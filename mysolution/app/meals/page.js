@@ -40,7 +40,7 @@ export default function Meals() {
   const handleOpenModal = async (mealId) => {
     try {
       const meal = await fetchDataSingle(mealId);
-      setSingleMeal(meal);
+      setSingleMeal(meal[0]);
       setOpenModal(true);
     } catch (error) {
       console.error("Error fetching single meal:", error);
@@ -100,10 +100,10 @@ export default function Meals() {
           {fetchedSingleMeal ? (
             <>
               <Typography id="simple-modal-title" variant="h6" component="h2">
-                {fetchedSingleMeal.title}
+                Meal: {fetchedSingleMeal.title}
               </Typography>
               <Typography id="simple-modal-description" sx={{ mt: 2 }}>
-                {fetchedSingleMeal.description}
+                Description: {fetchedSingleMeal.description}
               </Typography>
               <Typography>Price: {fetchedSingleMeal.price}</Typography>
             </>
@@ -122,7 +122,7 @@ export default function Meals() {
           {fetchedMeals.length > 0 ? (
             fetchedMeals.map((meal, index) => (
               <Grid2 item xs={12} sm={6} md={3} key={index}>
-                <Card sx={{ textAlign: "center", padding: 2 }}>
+                <Card className={styles.gridCard}>
                   <Typography
                     variant="h6"
                     component="div"
@@ -137,9 +137,6 @@ export default function Meals() {
                   />
                   <CardContent>
                     <Typography variant="body1">
-                      Description: {meal.description}
-                    </Typography>
-                    <Typography variant="body1">
                       Reservations: {meal.max_reservations}
                     </Typography>
                     <Typography variant="h6" color="textSecondary">
@@ -147,6 +144,7 @@ export default function Meals() {
                     </Typography>
                   </CardContent>
                   <Button
+                    key={index}
                     variant="contained"
                     color="primary"
                     onClick={() => handleOpenModal(meal.id)} // Fix here: Pass function to onClick

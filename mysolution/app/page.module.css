@@ -34,6 +34,13 @@
   align-items: center; /* center items horizontally */
   justify-content: center; /* center items vertically */
 }
+
+.gridCard {
+  text-align: center;
+  padding: 2px;
+  width: 250px;
+  height: 300px;
+}
 .courseButton {
   margin: 10px;
   padding: 10px;

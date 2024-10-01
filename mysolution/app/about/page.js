@@ -15,101 +15,99 @@ export default function About() {
         className={styles.header}
       >
         <Typography variant="h2" gutterBottom>
-          About
+          About us
         </Typography>
         <Typography variant="body1">
-          Salsa Casino Dans was founded in 2016 after its creator,{" "}
-          <strong>
-            <a href="#">Livan Benitez</a>
-          </strong>
-          , was asked to continue teaching Salsa after his previous role as a
-          Salsa instructor at Union Scene ended. Old friends and students wanted
-          to keep learning Salsa with Livan and asked him to stay. This became
-          the foundation and starting point for what would become Livan’s
-          vision: an established Cuban Salsa school in Drammen, Salsa Casino
-          Dans.
-        </Typography>
-        <Typography variant="body1">
-          Today, Salsa Casino Dans is a well-established Salsa school, and its
-          development is due not only to the administrative efforts but also to
-          the students. That’s why Salsa Casino Dans is not just a Salsa school
-          but also a family where we share activities, lessons, travel, and
-          memories. It’s a place where the dancer inside you emerges quickly.
+          Welcome to our Meal Sharing App, where food meets community! Our
+          meal-sharing app is designed to bring people together through the joy
+          of cooking and sharing meals. Whether you're a home cook, a food
+          enthusiast, or someone looking to explore new culinary experiences,
+          our platform connects you with others who share your passion for good
+          food.
         </Typography>
       </Box>
-
+      <br />
+      <br />
       <Box sx={{ textAlign: "center", my: 4 }}>
-        <Typography variant="h3" gutterBottom>
-          Liván Benitez
+        <Typography variant="h2" gutterBottom>
+          Mission
         </Typography>
-        <Typography variant="subtitle1" paragraph>
-          Founder of the school
-        </Typography>
-        <Image
-          src="/images/Profil.jpg"
-          alt="Liván Benitez Profile Image"
-          width="320"
-          height="400"
-          style={{ borderRadius: "8px" }}
-        />
 
-        <Box sx={{ my: 4 }}>
+        <Typography variant="body1">
+          We believe that sharing a meal is one of the simplest and most
+          powerful ways to connect with others. Our mission is to foster a sense
+          of community by encouraging people to share their homemade dishes,
+          discover local flavors, and create lasting memories around the dinner
+          table.
+        </Typography>
+        <br />
+        <br />
+        <br />
+        <Typography variant="h5" gutterBottom>
+          How It Works
+        </Typography>
+
+        <br />
+        <ul className={styles.cvText}>
+          <li>
+            <strong>Share Your Dishes:</strong> Cook up your favorite recipes
+            and share them with others in your neighborhood. Whether it’s a
+            family secret or a new culinary adventure, your meals can bring joy
+            to someone else's day.
+          </li>
+          <li>
+            <strong>Discover New Flavors:</strong> Browse a diverse selection of
+            homemade meals from local cooks. Discover new cuisines, flavors, and
+            cooking styles right in your community.
+          </li>
+          <li>
+            <strong>Join a Community:</strong> Connect with fellow food lovers!
+            Engage in discussions, share cooking tips, and plan meal gatherings
+            to enjoy together.
+          </li>
+          <li>
+            <strong>2003:</strong> Diploma in Show Production.
+          </li>
+        </ul>
+      </Box>
+
+      <Box sx={{ my: 4 }}>
+        <Typography
+          variant="h5"
+          sx={{ textAlign: "center", my: 4 }}
+          gutterBottom
+        >
+          Why Us?
+        </Typography>
+        <ul className={styles.cvText}>
+          <li>
+            <strong>Support Local Cooks:</strong>By using our Meal Sharing App,
+            you’re supporting local home cooks and promoting community
+            engagement. Help uplift culinary talent in your area!
+          </li>
+          <li>
+            <strong>Safety First:</strong> We prioritize the safety of our
+            users. Our platform includes features for user reviews, ratings, and
+            secure communication to ensure a positive experience for everyone.
+          </li>
+          <li>
+            <strong>Create Lasting Connections:</strong> More than just a
+            meal-sharing app, we’re a community that celebrates the joy of
+            cooking and sharing. Make new friends and create cherished memories
+            over shared meals.
+          </li>
+        </ul>
+        <Box sx={{ textAlign: "center", my: 4 }}>
           <Typography variant="h4" gutterBottom>
-            Education
+            Join Today!
           </Typography>
+
           <Typography variant="body1">
-            In addition to many years of experience as a dance teacher, Liván
-            Benitez has studied dance at the Universidad de las Artes in Havana,
-            specializing in <strong>Afro-Cuban dance</strong>, and at the
-            Norwegian College of Dance (Norges Dansehøyskole) in Oslo,
-            specializing in <strong>Jazz dance</strong>.
+            Whether you’re here to share your culinary creations or to enjoy a
+            homemade meal made by others, We invite you to join our growing
+            community. Sign up today and experience the joy of sharing meals
+            with like-minded food enthusiasts!
           </Typography>
-          <br />
-          <ul className={styles.cvText}>
-            <li>
-              <strong>2014-2017:</strong> Norwegian College of Dance - Jazz
-              dancer and pedagogue.
-            </li>
-            <li>
-              <strong>2007-2012:</strong> Universidad de las Artes, Havana, Cuba
-              - Bachelor's degree in dance.
-            </li>
-            <li>
-              <strong>2005-2007:</strong> Universidad de las Artes (ISA),
-              Havana, Cuba - Theater (acting).
-            </li>
-            <li>
-              <strong>2003:</strong> Diploma in Show Production.
-            </li>
-            <li>
-              <strong>2001-2003:</strong> Universidad Pedagógica, Camagüey, Cuba
-              - Music teacher for secondary school.
-            </li>
-          </ul>
-        </Box>
-
-        <Box sx={{ my: 4 }}>
-          <Typography variant="h4" gutterBottom>
-            Experience
-          </Typography>
-          <ul className={styles.cvText}>
-            <li>
-              <strong>2010-2012:</strong> Dancer at Tropicana, Havana, Cuba.
-            </li>
-            <li>
-              <strong>2012:</strong> Dancer in TV Ballet in Cuba.
-            </li>
-            <li>
-              <strong>2008:</strong> Dancer at the National Circus in Cuba.
-            </li>
-          </ul>
-          <Image
-            src="/images/dancer.png"
-            alt="Liván Benitez Performance"
-            width="300"
-            height="200"
-            style={{ borderRadius: "8px" }}
-          />
         </Box>
       </Box>
     </Container>
