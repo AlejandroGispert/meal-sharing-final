@@ -5,7 +5,8 @@ const nextConfig = {
   images: {
     domains: ["github.com"], // Add allowed domains here
   },
-  i18n: i18n(),
+
+  output: "export",
 };
 
 export default nextConfig;

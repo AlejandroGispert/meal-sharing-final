@@ -119,6 +119,13 @@ export default function Meals() {
           <Button onClick={handleCloseModal} variant="outlined" sx={{ mt: 2 }}>
             Close
           </Button>
+          <Button
+            onClick={() => alert("reserved")}
+            variant="outlined"
+            sx={{ mt: 2 }}
+          >
+            Reserve
+          </Button>
         </Box>
       </Modal>
 
