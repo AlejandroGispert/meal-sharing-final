@@ -10,9 +10,11 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import styles from "../page.module.css";
-import { Grid2, Modal } from "@mui/material"; // Make sure you're importing Grid2 correctly
+import { Grid2 } from "@mui/material"; // Make sure you're importing Grid2 correctly
 import TextField from "@mui/material/TextField";
 import Image from "next/image";
+import Modal from "../components/Modal";
+
 const fetchData = async () => {
   const response = await fetch(
     "https://meal-sharing-final-backend.onrender.com/meals/"
@@ -36,18 +38,18 @@ export default function Meals() {
   const [fetchedSingleMeal, setSingleMeal] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [currentMealId, setCurrentMealId] = useState(null);
 
   const handleOpenModal = async (mealId) => {
     try {
       const meal = await fetchDataSingle(mealId);
       setSingleMeal(meal[0]);
+      setCurrentMealId(mealId);
       setOpenModal(true);
     } catch (error) {
       console.error("Error fetching single meal:", error);
     }
   };
-
-  const handleCloseModal = () => setOpenModal(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -79,55 +81,11 @@ export default function Meals() {
 
       {/* The Modal component */}
       <Modal
-        open={openModal}
-        onClose={handleCloseModal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          {fetchedSingleMeal ? (
-            <>
-              <Typography id="simple-modal-title" variant="h6" component="h2">
-                Meal: {fetchedSingleMeal.title}
-              </Typography>
-              <Image
-                alt={fetchedSingleMeal.title}
-                src={fetchedSingleMeal.image_url}
-                width={300}
-                height={300}
-              />
-              <Typography id="simple-modal-description" sx={{ mt: 2 }}>
-                Description: {fetchedSingleMeal.description}
-              </Typography>
-              <Typography>Price: {fetchedSingleMeal.price}</Typography>
-            </>
-          ) : (
-            <Typography>Loading...</Typography>
-          )}
-          <Button onClick={handleCloseModal} variant="outlined" sx={{ mt: 2 }}>
-            Close
-          </Button>
-          <Button
-            onClick={() => alert("reserved")}
-            variant="outlined"
-            sx={{ mt: 2 }}
-          >
-            Reserve
-          </Button>
-        </Box>
-      </Modal>
+        isOpen={openModal}
+        setIsOpen={setOpenModal}
+        fetchedSingleMeal={fetchedSingleMeal}
+        currentMealId={currentMealId}
+      />
 
       {/* Grid for the Meals */}
       <Box sx={{ flexGrow: 1, padding: 2 }}>

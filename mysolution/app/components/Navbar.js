@@ -43,22 +43,18 @@ export default function Navbar() {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {[
-          "Home",
-          "Meals",
-          "Salsa Cubana",
-          "Become host",
-          "Reviews",
-          "Media",
-          "About",
-          "Contact",
-        ].map((text) => (
-          <ListItem sx={{ marginTop: 4.75 }} button key={text}>
-            <Link href={`/${text.toLowerCase().replace(/\s+/g, "-")}`} passHref>
-              <ListItemText primary={text} />
-            </Link>
-          </ListItem>
-        ))}
+        {["Home", "Meals", "Become host", "Add", "About", "Contact"].map(
+          (text) => (
+            <ListItem sx={{ marginTop: 4.75 }} button key={text}>
+              <Link
+                href={`/${text.toLowerCase().replace(/\s+/g, "-")}`}
+                passHref
+              >
+                <ListItemText primary={text} />
+              </Link>
+            </ListItem>
+          )
+        )}
       </List>
       <Divider />
     </Box>
@@ -106,11 +102,7 @@ export default function Navbar() {
                 Become a host
               </Link>
             </Button>
-            <Button color="inherit" sx={{ mx: 1 }}>
-              <Link href="/pricing" passHref>
-                Pricing
-              </Link>
-            </Button>
+
             <Button color="inherit" sx={{ mx: 1 }}>
               <Link href="/about" passHref>
                 About

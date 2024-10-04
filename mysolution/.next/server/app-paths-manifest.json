@@ -1,15 +1,5 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/become-host/page": "app/become-host/page.js",
-  "/about/page": "app/about/page.js",
-  "/jazz-og-moderne-dans/page": "app/jazz-og-moderne-dans/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/ladies-style/page": "app/ladies-style/page.js",
-  "/home/page": "app/home/page.js",
   "/meals/page": "app/meals/page.js",
-  "/mens-style/page": "app/mens-style/page.js",
-  "/salsa-cubana/page": "app/salsa-cubana/page.js",
-  "/media/page": "app/media/page.js",
-  "/page": "app/page.js"
+  "/add/page": "app/add/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }

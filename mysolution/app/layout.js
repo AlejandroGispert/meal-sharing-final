@@ -33,9 +33,8 @@ export default function RootLayout({ children }) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "VideoObject",
-              name: "Promo video of Salsa Casino Dans",
-              description:
-                "Watch the promo video showcasing Salsa Casino Dans school.",
+              name: "Promo video of a delicious meal",
+              description: "Watch the promo video showcasing a delicious meal.",
               thumbnailUrl: "/images/thumbnail.png",
               uploadDate: "2024-09-20T08:00:00+00:00",
               // contentUrl: "https://yourwebsite.com/videos/promo.mp4",
@@ -43,7 +42,7 @@ export default function RootLayout({ children }) {
               duration: "PT2M30S", // Example duration
               publisher: {
                 "@type": "Organization",
-                name: "Salsa Casino Dans",
+                name: "Share Meal App",
                 logo: {
                   "@type": "ImageObject",
                   url: "/images/thumbnail.png",
