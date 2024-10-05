@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import styles from "../page.module.css";
 import { Grid2 } from "@mui/material"; // Make sure you're importing Grid2 correctly
 import TextField from "@mui/material/TextField";
-import Image from "next/image";
+
 import Modal from "../components/Modal";
 
 const fetchData = async () => {
@@ -29,6 +29,15 @@ const fetchDataSingle = async (mealId) => {
     `https://meal-sharing-final-backend.onrender.com/meals/${mealId}`
   );
   const data = await response.json();
+
+  return data;
+};
+
+const search = async (value) => {
+  const response = await fetch(
+    `https://meal-sharing-final-backend.onrender.com/meals?title=${value}`
+  );
+  const data = await response.json();
   console.log(data);
   return data;
 };
@@ -36,9 +45,22 @@ const fetchDataSingle = async (mealId) => {
 export default function Meals() {
   const [fetchedMeals, setMeals] = useState([]);
   const [fetchedSingleMeal, setSingleMeal] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  // const [inputValue, setInputValue] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [currentMealId, setCurrentMealId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchClick = async () => {
+    try {
+      const selectedMeals = await search(searchTerm);
+
+      setMeals(selectedMeals);
+      console.log("done");
+      console.log(selectedMeals);
+    } catch (err) {
+      console.error("Error searching meals:", err);
+    }
+  };
 
   const handleOpenModal = async (mealId) => {
     try {
@@ -64,19 +86,16 @@ export default function Meals() {
     getData();
   }, []);
 
-  const handleChangeInput = (event) => {
-    setInputValue(event.target.value);
-  };
-
   return (
     <div>
       <div className={styles.header}>
         <TextField
           label="Search meal"
           variant="outlined"
-          value={inputValue}
-          onChange={handleChangeInput}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <Button onClick={handleSearchClick}>search</Button>
       </div>
 
       {/* The Modal component */}

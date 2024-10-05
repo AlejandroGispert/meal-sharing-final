@@ -1,7 +1,6 @@
 import express from "express";
-import knex from "../database_client.js";
+import knex from "../database_client.js"; // Ensure this is set up for PostgreSQL
 
-// This router can be deleted once you add your own router
 const mealsRouter = express.Router();
 
 mealsRouter.get("/", async (req, res) => {
@@ -34,7 +33,7 @@ mealsRouter.get("/", async (req, res) => {
     }
 
     if (titleApi) {
-      query = query.where("title", "LIKE", `%${titleApi}%`);
+      query = query.where("title", "ILIKE", `%${titleApi}%`); // ILIKE for case-insensitive matching in PostgreSQL
     }
 
     if (dateAfterApi) {
@@ -53,32 +52,26 @@ mealsRouter.get("/", async (req, res) => {
       query = query.limit(limitApi);
     }
 
+    // Get available reservations directly in the meal query
     if (availableReservationsApi) {
-      const availableReservationsMeals = await knex("Meal")
-        .join("Reservation", "Meal.id", "=", "Reservation.meal_id")
-        .select("Meal.max_reservations", "Reservation.number_of_guests");
-
-      for (const meal of availableReservationsMeals) {
-        const reservationsAvailable =
-          meal.max_reservations - meal.number_of_guests;
-
-        if (reservationsAvailable > 0 && availableReservationsApi === "true") {
-          console.log(meal);
-          res.send(meal);
-        }
-        if (
-          reservationsAvailable === 0 &&
-          availableReservationsApi === "false"
-        ) {
-          console.log(meal);
-          res.send(meal);
-        }
-      }
+      query = query.whereExists(function () {
+        this.select("*")
+          .from("Reservation")
+          .whereRaw("Meal.id = Reservation.meal_id")
+          .havingRaw(
+            "Meal.max_reservations - SUM(Reservation.number_of_guests) > 0"
+          )
+          .groupBy("Reservation.meal_id");
+      });
     }
 
-    // Execute the query
-    const meals = await query;
-    res.send(meals);
+    const meals = await query; // Execute the query
+
+    if (meals.length > 0) {
+      res.json(meals); // Send the found meals as a JSON response
+    } else {
+      res.status(404).json({ message: "No meals found" }); // Handle case with no meals found
+    }
   } catch (error) {
     console.error("Error fetching meals:", error);
     res.status(500).send({ error: "An error occurred while fetching meals" });
@@ -86,7 +79,7 @@ mealsRouter.get("/", async (req, res) => {
 });
 
 mealsRouter.post("/", async (req, res) => {
-  const { title, description, location, max_reservations, price } = req.query;
+  const { title, description, location, max_reservations, price } = req.body; // Changed to req.body for POST requests
   try {
     await knex("Meal").insert({
       title,
@@ -94,98 +87,101 @@ mealsRouter.post("/", async (req, res) => {
       location,
       max_reservations,
       price,
-      created_date: new Date(),
+      created_date: new Date(), // Ensure date is in the right format for PostgreSQL
     });
 
     res.status(201).send("New Meal created successfully.");
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Error creating reservation.");
+    console.error("Error creating meal:", error);
+    res.status(500).send("Error creating meal.");
   }
 });
 
 mealsRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
 
-  // const fetchedItem = await knex.select("*").from("Meal").where("id", id);
   const fetchedItem = await knex("Meal")
     .select("Meal.*", "images.image_url") // Select fields from both tables
     .leftJoin("images", "Meal.image_id", "images.id") // Perform a LEFT JOIN
-    .where("Meal.id", id);
+    .where("Meal.id", id)
+    .first(); // Use .first() to get a single object instead of an array
 
-  if (fetchedItem.length > 0) {
-    res.send(fetchedItem);
+  if (fetchedItem) {
+    res.json(fetchedItem);
   } else {
-    res.send("No data found in that meal ID");
+    res.status(404).send("No data found for that meal ID");
   }
 });
 
 mealsRouter.put("/:id", async (req, res) => {
   const id = req.params.id;
-  const { title, description, location, max_reservations, price } = req.query;
+  const { title, description, location, max_reservations, price } = req.body; // Changed to req.body for POST requests
 
-  await knex("Meal").where({ id: id }).update({
+  const updated = await knex("Meal").where({ id }).update({
     title,
     description,
     location,
     max_reservations,
     price,
-    created_date: new Date(),
+    updated_date: new Date(), // Updated date for modifications
   });
 
-  res.send("The database has been updated");
+  if (updated) {
+    res.send("The meal has been updated");
+  } else {
+    res.status(404).send("Meal not found");
+  }
 });
 
 mealsRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
 
-  await knex("Meal").where("id", id).del();
+  const deleted = await knex("Meal").where("id", id).del();
 
-  res.send("the item has been deleted");
+  if (deleted) {
+    res.send("The item has been deleted");
+  } else {
+    res.status(404).send("Meal not found");
+  }
 });
 
 mealsRouter.get("/:meal_id/reviews", async (req, res) => {
   const mealId = req.params.meal_id;
 
-  const fetchedItem = await knex
-    .select("*")
-    .from("Review")
-    .where("meal_id", mealId);
+  const fetchedReviews = await knex("Review").where("meal_id", mealId);
 
-  if (fetchedItem.length > 0) {
-    res.send(fetchedItem);
+  if (fetchedReviews.length > 0) {
+    res.json(fetchedReviews);
   } else {
-    res.send("No data found in that meal ID");
+    res.status(404).send("No reviews found for that meal ID");
   }
 });
 
+// If you need to handle review updates, provide implementation here
 mealsRouter.put("/:meal_id/reviews", async (req, res) => {
   const mealId = req.params.meal_id;
+  const { content } = req.body; // Assume reviews have content
 
-  const fetchedItem = await knex
-    .select("*")
-    .from("Review")
-    .where("meal_id", mealId);
+  const updated = await knex("Review")
+    .where("meal_id", mealId)
+    .update({ content });
 
-  if (fetchedItem.length > 0) {
-    res.send(fetchedItem);
+  if (updated) {
+    res.send("The review has been updated");
   } else {
-    res.send("No data found in that meal ID");
+    res.status(404).send("No review found for that meal ID");
   }
 });
 
 mealsRouter.delete("/:meal_id/reviews", async (req, res) => {
   const mealId = req.params.meal_id;
 
-  const fetchedItem = await knex
-    .select("*")
-    .from("Review")
-    .where("meal_id", mealId);
+  const deleted = await knex("Review").where("meal_id", mealId).del();
 
-  if (fetchedItem.length > 0) {
-    res.send(fetchedItem);
+  if (deleted) {
+    res.send("The reviews have been deleted");
   } else {
-    res.send("No data found in that meal ID");
+    res.status(404).send("No reviews found for that meal ID");
   }
 });
 
