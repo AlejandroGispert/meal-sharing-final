@@ -6,7 +6,8 @@ const nextConfig = {
     domains: ["github.com"], // Add allowed domains here
   },
   unoptimized: true,
-  // output: "export",
+  output: "export",
+  trailingSlash: true,
 };
 
 export default nextConfig;
