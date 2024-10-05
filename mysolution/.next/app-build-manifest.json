@@ -1,10 +1,10 @@
 {
   "pages": {
-    "/meals/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/meals/page.css",
-      "static/chunks/app/meals/page.js"
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -12,11 +12,22 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/add/page": [
+    "/become-host/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/add/page.css",
-      "static/chunks/app/add/page.js"
+      "static/css/app/become-host/page.css",
+      "static/chunks/app/become-host/page.js"
+    ],
+    "/meals/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/meals/page.css",
+      "static/chunks/app/meals/page.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/login/page.js"
     ]
   }
 }

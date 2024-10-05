@@ -1,6 +1,12 @@
 import styles from "../page.module.css";
 
-export default function Map() {
+export default function Map({ city }) {
+  // const getMapUrl = (cityName) => {
+  //   return `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
+  //     cityName
+  //   )}&key=YOUR_GOOGLE_MAPS_API_KEY`;
+  // };
+
   return (
     <div className={styles.map}>
       <iframe

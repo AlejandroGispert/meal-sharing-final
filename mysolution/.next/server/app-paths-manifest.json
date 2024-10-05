@@ -1,5 +1,5 @@
 {
-  "/meals/page": "app/meals/page.js",
-  "/add/page": "app/add/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/page": "app/page.js",
+  "/become-host/page": "app/become-host/page.js",
+  "/login/page": "app/login/page.js"
 }

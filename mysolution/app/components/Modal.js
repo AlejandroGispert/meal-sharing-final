@@ -58,6 +58,7 @@ export default function ModalComponent({
               src={fetchedSingleMeal.image_url}
               width={300}
               height={300}
+              layout="intrinsic"
             />
             <Typography id="simple-modal-description" sx={{ mt: 2 }}>
               Description: {fetchedSingleMeal.description}

@@ -2,11 +2,14 @@
 
 import * as React from "react";
 import Head from "next/head";
-import styles from "../page.module.css";
+import Image from "next/image";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button, TextField } from "@mui/material";
+import { useState } from "react";
+import Switch from "@mui/material/Switch";
+import styles from "../page.module.css";
 
 const mealTagList = {
   image: "images/thumbnail.png",
@@ -16,7 +19,7 @@ const mealTagList = {
   tag4: "$",
   buttonTxt: "Add meal",
 };
-const reservationTagList = {
+const reviewTagList = {
   image: "images/thumbnail.png",
   tag1: "Number of guests",
   tag2: "Name",
@@ -29,7 +32,7 @@ export default function Add() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Add Meal or Review</title>
+        <title>Add Meal</title>
         <meta name="description" content="add" />
         <meta charSet="UTF-8" />
       </Head>
@@ -38,7 +41,7 @@ export default function Add() {
         <Container maxWidth="md">
           <Box className={styles.header}>
             <Typography variant="h4" component="h1">
-              Add Meal or Review
+              Add meal
             </Typography>
           </Box>
         </Container>

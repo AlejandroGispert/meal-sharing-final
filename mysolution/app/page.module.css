@@ -224,6 +224,13 @@
     color: yellow;
     padding: 50px;
   }
+  .becomeHostFormContainer {
+    position: absolute;
+    top: 190px;
+    right: 2px;
+
+    padding: 50px;
+  }
   .stylingPics {
     width: 100%;
     height: auto;

@@ -104,8 +104,8 @@ export default function Navbar() {
             </Button>
 
             <Button color="inherit" sx={{ mx: 1 }}>
-              <Link href="/about" passHref>
-                About
+              <Link href="/login" passHref>
+                Login
               </Link>
             </Button>
             {/* Language switcher */}
