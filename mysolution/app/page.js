@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,8 +13,16 @@ import AnimatedText from "./components/AnimatedText";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styles from "./page.module.css";
+import { motion } from "framer-motion";
+
+const variants = {
+  hidden: { opacity: 0, x: -200 },
+  enter: { opacity: 1, x: 0 },
+  exit: { opacity: 0.5, x: 200 },
+};
 
 export default function Home() {
+  const router = useRouter();
   const videoRef = useRef(null); // Reference to the video element
   const [inputValue, setInputValue] = useState("");
 
@@ -51,31 +60,39 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
-      {/* Background Video */}
-      <div className={styles.videoWrapper}>
-        <video
-          ref={videoRef}
-          className={styles.backgroundVideo}
-          autoPlay
-          muted
-          playsInline
-          title="meal"
-          aria-label="An ai generated video of a delitious meal"
-          poster="/images/thumbnail.png" // Optimized thumbnail image
-        >
-          <source src="/videos/meal1.mp4" type="video/mp4" />
-          <source src="/videos/meal1.webm" type="video/webm" />{" "}
-          {/* Fallback format */}
-          Your browser does not support the video tag.
-        </video>
-      </div>
+    <motion.div
+      key={router.route}
+      variants={variants}
+      initial="hidden"
+      animate="enter"
+      exit="exit"
+      transition={{ type: "linear" }}
+    >
+      <div className={styles.container}>
+        {/* Background Video */}
+        <div className={styles.videoWrapper}>
+          <video
+            ref={videoRef}
+            className={styles.backgroundVideo}
+            autoPlay
+            muted
+            playsInline
+            title="meal"
+            aria-label="An ai generated video of a delitious meal"
+            poster="/images/thumbnail.png" // Optimized thumbnail image
+          >
+            <source src="/videos/meal1.mp4" type="video/mp4" />
+            <source src="/videos/meal1.webm" type="video/webm" />{" "}
+            {/* Fallback format */}
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
-      {/* Main Content */}
-      <Box className={styles.content}>
-        <h1 style={{ fontFamily: "Salsa, sans-serif" }}>Welcome to</h1>
-        <AnimatedText />
-        {/* <TextField
+        {/* Main Content */}
+        <Box className={styles.content}>
+          <h1 style={{ fontFamily: "Salsa, sans-serif" }}>Welcome to</h1>
+          <AnimatedText />
+          {/* <TextField
           label="Enter your text"
           variant="outlined"
           value={inputValue}
@@ -83,19 +100,20 @@ export default function Home() {
         >
           <p>Your input{inputValue}</p>
         </TextField> */}
-        {/* <Button variant="contained" color="primary" onClick={handleClick}>
+          {/* <Button variant="contained" color="primary" onClick={handleClick}>
           Get Started
         </Button> */}
-      </Box>
+        </Box>
 
-      <Box className={styles.transcript}>
-        <h2>Video Transcript</h2>
-        <p>
-          This video showcases the Salsa Casino Dans school, highlighting
-          various dance moves, lessons, and student performances. Learn more
-          about our classes and events at Salsa Casino Dans.
-        </p>
-      </Box>
-    </div>
+        <Box className={styles.transcript}>
+          <h2>Video Transcript</h2>
+          <p>
+            This video showcases the Salsa Casino Dans school, highlighting
+            various dance moves, lessons, and student performances. Learn more
+            about our classes and events at Salsa Casino Dans.
+          </p>
+        </Box>
+      </div>{" "}
+    </motion.div>
   );
 }

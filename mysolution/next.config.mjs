@@ -4,10 +4,11 @@ import i18n from "./i18n/next-i18next.config.js";
 const nextConfig = {
   images: {
     domains: ["github.com"], // Add allowed domains here
+    unoptimized: true,
   },
-  unoptimized: true,
+
   output: "export",
-  trailingSlash: true,
+  // trailingSlash: true,
 };
 
 export default nextConfig;

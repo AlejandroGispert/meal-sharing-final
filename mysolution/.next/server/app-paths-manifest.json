@@ -1,12 +1,13 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/contact/page": "app/contact/page.js",
   "/about/page": "app/about/page.js",
-  "/home/page": "app/home/page.js",
-  "/become-host/page": "app/become-host/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/add/page": "app/add/page.js",
   "/meals/page": "app/meals/page.js",
+  "/become-host/page": "app/become-host/page.js",
   "/page": "app/page.js",
-  "/login/page": "app/login/page.js",
-  "/add/page": "app/add/page.js"
+  "/contact/page": "app/contact/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/home/page": "app/home/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/login/page": "app/login/page.js"
 }

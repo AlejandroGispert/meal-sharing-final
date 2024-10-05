@@ -112,7 +112,6 @@ export default function BecomeHost() {
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                onChange={() => setCity(target.value)}
               />
               <TextField
                 label="Meal Details"
