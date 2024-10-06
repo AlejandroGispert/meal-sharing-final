@@ -9,9 +9,11 @@ import Container from "@mui/material/Container";
 import styles from "../page.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../AuthContext";
+
 export default function Dashboard() {
   const router = useRouter();
-
+  const { user } = useAuth(); //
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +33,7 @@ export default function Dashboard() {
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
-
+  console.log("this: " + user);
   return (
     <Container maxWidth="md" className={styles.aboutAddWhenResponsive}>
       <Box
@@ -43,7 +45,7 @@ export default function Dashboard() {
         </Typography>
         <Typography variant="h6" gutterBottom>
           {/*    {name ? name : "Guest"} */}
-          {name}
+          {user}
         </Typography>
       </Box>
     </Container>

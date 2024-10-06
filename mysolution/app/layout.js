@@ -1,9 +1,10 @@
+"use client";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Head from "next/head"; // For adding schema markup in the head
-
+import { AuthProvider, useAuth } from "../AuthContext";
 import styles from "../app/page.module.css";
 
 const geistSans = localFont({
@@ -17,10 +18,10 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata = {
-  title: "Meal Sharing App",
-  description: "an app for sharing meals",
-};
+// export const metadata = {
+//   title: "Meal Sharing App",
+//   description: "an app for sharing meals",
+// };
 
 export default function RootLayout({ children }) {
   return (
@@ -53,10 +54,22 @@ export default function RootLayout({ children }) {
         />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <AuthProvider>
+          <CheckLoginStatus />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
 }
+
+const CheckLoginStatus = () => {
+  const { user } = useAuth();
+
+  // Log the user status whenever it changes
+  console.log("User:", user);
+
+  return null; // This component does not render anything
+};

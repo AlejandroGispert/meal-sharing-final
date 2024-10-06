@@ -79,6 +79,7 @@ export default function Meals() {
       setSingleMeal(meal[0]);
       setCurrentMealId(mealId);
       setOpenModal(true);
+      console.log("this " + meal[0]);
     } catch (error) {
       console.error("Error fetching single meal:", error);
     }
@@ -95,7 +96,7 @@ export default function Meals() {
     };
 
     getData();
-  }, []);
+  }, [sortedState]);
 
   return (
     <div>
@@ -122,11 +123,11 @@ export default function Meals() {
         <div>
           <Button>
             {" "}
-            <ArrowUpwardIcon onClick={() => setSortedState("desc")} />
+            <ArrowUpwardIcon onClick={() => setSortedState("asc")} />
           </Button>
           <Button>
             {" "}
-            <ArrowDownwardIcon onClick={() => setSortedState("asc")} />
+            <ArrowDownwardIcon onClick={() => setSortedState("desc")} />
           </Button>
         </div>
         <Grid2 className={styles.grid} container spacing={6}>
@@ -172,6 +173,7 @@ export default function Meals() {
               sx={{ textAlign: "center", padding: 2 }}
             >
               No meals available.
+              <br /> Try again later
             </Typography>
           )}
         </Grid2>

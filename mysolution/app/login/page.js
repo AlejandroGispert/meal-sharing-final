@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,10 +19,12 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const { login } = useAuth(); // Extract login directly here
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setLoading(true); // Set loading to true when fetching starts
+    setLoading(true);
     setError("");
 
     try {
@@ -42,6 +45,12 @@ export default function Login() {
         // Successful login logic here
         console.log("Login successful:", user.full_name);
         alert("Login successful! " + user.full_name);
+
+        // Here, you can login the user
+        // const userData = { full_name: user.full_name, id: user.id };
+        login(user.full_name);
+
+        // Redirect to the dashboard
         router.push(`/dashboard?user=${user.full_name}&id=${user.id}`);
       } else {
         setError("Invalid email or password");
@@ -50,7 +59,7 @@ export default function Login() {
       console.error("Error fetching hosts:", error);
       setError("Failed to fetch user data");
     } finally {
-      setLoading(false); // Set loading to false when fetching ends
+      setLoading(false);
     }
   };
 
@@ -67,6 +76,8 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        {error && <Typography color="error">{error}</Typography>}{" "}
+        {/* Display error message */}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -99,7 +110,7 @@ export default function Login() {
             sx={{ mt: 3, mb: 2 }}
             disabled={loading}
           >
-            {loading ? "Loading..." : "Sign In"} {/* Show loading text */}
+            {loading ? "Loading..." : "Sign In"}
           </Button>
           <Grid2 container>
             <Grid2 item xs>
