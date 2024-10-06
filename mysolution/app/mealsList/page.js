@@ -14,29 +14,39 @@ import { Grid2 } from "@mui/material"; // Make sure you're importing Grid2 corre
 import TextField from "@mui/material/TextField";
 
 import Modal from "../components/Modal";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
-const fetchData = async () => {
-  const response = await fetch(
-    "https://meal-sharing-final-backend.onrender.com/meals/"
-  );
+const fetchData = async (sortedState) => {
+  const url =
+    sortedState === "asc"
+      ? `https://meal-sharing-final-backend.onrender.com/meals?sortDir=asc`
+      : `https://meal-sharing-final-backend.onrender.com/meals`;
+
+  const response = await fetch(url);
   const data = await response.json();
   console.log(data);
   return data;
 };
 
-const fetchDataSingle = async (mealId) => {
-  const response = await fetch(
-    `https://meal-sharing-final-backend.onrender.com/meals/${mealId}`
-  );
-  const data = await response.json();
+const fetchDataSingle = async (mealId, sortedState) => {
+  const url =
+    sortedState === "asc"
+      ? `https://meal-sharing-final-backend.onrender.com/meals/${mealId}?sortDir=${sortedState}`
+      : `https://meal-sharing-final-backend.onrender.com/meals/${mealId}`;
 
+  const response = await fetch(url);
+  const data = await response.json();
   return data;
 };
 
-const search = async (value) => {
-  const response = await fetch(
-    `https://meal-sharing-final-backend.onrender.com/meals?title=${value}`
-  );
+const search = async (value, sortedState) => {
+  const url =
+    sortedState === "asc"
+      ? `https://meal-sharing-final-backend.onrender.com/meals?title=${value}&sortDir=${sortedState}`
+      : `https://meal-sharing-final-backend.onrender.com/meals?title=${value}`;
+
+  const response = await fetch(url);
   const data = await response.json();
   console.log(data);
   return data;
@@ -49,10 +59,11 @@ export default function Meals() {
   const [openModal, setOpenModal] = useState(false);
   const [currentMealId, setCurrentMealId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortedState, setSortedState] = useState("desc");
 
   const handleSearchClick = async () => {
     try {
-      const selectedMeals = await search(searchTerm);
+      const selectedMeals = await search(searchTerm, sortedState);
 
       setMeals(selectedMeals);
       console.log("done");
@@ -62,9 +73,9 @@ export default function Meals() {
     }
   };
 
-  const handleOpenModal = async (mealId) => {
+  const handleOpenModal = async (mealId, sortedState) => {
     try {
-      const meal = await fetchDataSingle(mealId);
+      const meal = await fetchDataSingle(mealId, sortedState);
       setSingleMeal(meal[0]);
       setCurrentMealId(mealId);
       setOpenModal(true);
@@ -76,7 +87,7 @@ export default function Meals() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await fetchData();
+        const data = await fetchData(sortedState);
         setMeals(data); // Set the fetched meals array directly
       } catch (error) {
         console.error("Error fetching meals:", error);
@@ -108,6 +119,16 @@ export default function Meals() {
 
       {/* Grid for the Meals */}
       <Box sx={{ flexGrow: 1, padding: 2 }}>
+        <div>
+          <Button>
+            {" "}
+            <ArrowUpwardIcon onClick={() => setSortedState("desc")} />
+          </Button>
+          <Button>
+            {" "}
+            <ArrowDownwardIcon onClick={() => setSortedState("asc")} />
+          </Button>
+        </div>
         <Grid2 className={styles.grid} container spacing={6}>
           {fetchedMeals.length > 0 ? (
             fetchedMeals.map((meal, index) => (
@@ -137,7 +158,7 @@ export default function Meals() {
                     key={index}
                     variant="contained"
                     color="primary"
-                    onClick={() => handleOpenModal(meal.id)} // Fix here: Pass function to onClick
+                    onClick={() => handleOpenModal(meal.id, sortedState)} // Fix here: Pass function to onClick
                   >
                     More info {meal.id}
                   </Button>

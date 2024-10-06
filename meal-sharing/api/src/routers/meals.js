@@ -20,6 +20,7 @@ mealsRouter.get("/", async (req, res) => {
       req.query.sortDir?.toLowerCase() === "desc" ? "desc" : "asc";
 
     const validSortKeys = [
+      "id",
       "title",
       "when",
       "max_reservations",
@@ -57,11 +58,11 @@ mealsRouter.get("/", async (req, res) => {
       query = query.whereExists(function () {
         this.select("*")
           .from("Reservation")
-          .whereRaw("Meal.id = Reservation.meal_id")
+          .whereRaw("Reservation.meal_id = Meal.id") // Correctly reference the outer Meal table
+          .groupBy("Reservation.meal_id")
           .havingRaw(
             "Meal.max_reservations - SUM(Reservation.number_of_guests) > 0"
-          )
-          .groupBy("Reservation.meal_id");
+          );
       });
     }
 

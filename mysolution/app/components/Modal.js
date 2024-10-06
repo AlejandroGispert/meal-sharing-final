@@ -11,7 +11,7 @@ export default function ModalComponent({
   currentMealId,
 }) {
   const [singleMeal, setSingleMeal] = useState(null);
-  const [reviews, setReviews] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const [isOpenReviews, setIsOpenReviews] = useState(false);
   const [isMoved, setIsMoved] = useState(false);
   const [backdropVisible, setBackdropVisible] = useState(true);

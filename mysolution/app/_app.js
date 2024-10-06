@@ -1,6 +1,7 @@
 "use client";
 
-import * as React, { useEffect } from "react";
+import * as React from "react";
+import { useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../src/theme";
@@ -23,7 +24,7 @@ if (typeof window !== "undefined") {
   faro = initializeFaro({
     url: "https://faro-collector-prod-eu-north-0.grafana.net/collect/6c120f88f09c6db81207ed1aa0aaf357", // Your Grafana Faro instance URL
     app: {
-      name: "salsaCasinoDans", // App name
+      name: "ShareMealApp", // App name
       version: "1.0.0", // App version
       environment: "production", // Environment (e.g., production)
     },
@@ -42,25 +43,25 @@ function MyApp({ Component, pageProps }) {
       console.log("Faro is not initialized");
       return;
     }
-  
+
     // Push initial page view
     const initialUrl = window.location.href;
     console.log("Pushing initial page view:", initialUrl);
     faro.api.pushEvent("page_view", { url: initialUrl });
-  
+
     // Function to handle route changes
     const handleRouteChange = (url) => {
       console.log("Pushing route change event:", url);
       faro.api.pushEvent("page_view", { url });
     };
-  
+
     router.events.on("routeChangeComplete", handleRouteChange);
-  
+
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [router]);
-  
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

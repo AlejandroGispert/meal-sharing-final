@@ -1,8 +1,8 @@
-// File: /Users/nadiachristensen/Documents/HYF/meal-sharing-repo/mysolution/app/meals/page.js
-import * as entry from '../../../../app/meals/page.js'
+// File: /Users/nadiachristensen/Documents/HYF/meal-sharing-repo/mysolution/app/mealsList/page.js
+import * as entry from '../../../../app/mealsList/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../app/meals/page.js')
+type TEntry = typeof import('../../../../app/mealsList/page.js')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{
