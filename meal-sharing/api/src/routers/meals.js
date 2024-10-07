@@ -88,7 +88,7 @@ mealsRouter.post("/", async (req, res) => {
       location,
       max_reservations,
       price,
-      created_date: new Date(), // Ensure date is in the right format for PostgreSQL
+      created_date: knex.fn.now(), // Ensure date is in the right format for PostgreSQL
     });
 
     res.status(201).send("New Meal created successfully.");
@@ -101,16 +101,32 @@ mealsRouter.post("/", async (req, res) => {
 mealsRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
 
-  const fetchedItem = await knex("Meal")
-    .select("Meal.*", "images.image_url") // Select fields from both tables
-    .leftJoin("images", "Meal.image_id", "images.id") // Perform a LEFT JOIN
-    .where("Meal.id", id)
-    .first(); // Use .first() to get a single object instead of an array
+  // Validate that the `id` is a number
+  if (isNaN(id)) {
+    return res
+      .status(400)
+      .json({ error: "Invalid meal ID. ID must be a number." });
+  }
 
-  if (fetchedItem) {
-    res.json(fetchedItem);
-  } else {
-    res.status(404).send("No data found for that meal ID");
+  try {
+    // Query the database with a left join to include the image URL
+    const fetchedItem = await knex("Meal")
+      .select("Meal.*", "images.image_url") // Select fields from both tables
+      .leftJoin("images", "Meal.image_id", "images.id") // Perform a LEFT JOIN
+      .where("Meal.id", id)
+      .first(); // Use .first() to get a single object instead of an array
+
+    // Check if the meal exists
+    if (fetchedItem) {
+      res.json(fetchedItem);
+    } else {
+      // If no meal was found with that ID, return a 404 error
+      res.status(404).json({ error: "No data found for that meal ID." });
+    }
+  } catch (error) {
+    // Log the error and send a generic 500 Internal Server Error response
+    console.error("Error fetching meal:", error.message);
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 

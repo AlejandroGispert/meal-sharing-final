@@ -6,10 +6,17 @@ const hostsRouter = express.Router();
 
 // Get all host entries
 hostsRouter.get("/", async (req, res) => {
-  const result = await knex("hosts").select("*");
-  res.json(result);
-  if (!result) {
-    res.status(500).json({ error: "Internal server error" });
+  try {
+    const result = await knex("hosts").select("*");
+
+    if (!result || result.length === 0) {
+      return res.status(404).json({ error: "No hosts found" });
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error("Database error:", error.message);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -17,16 +24,30 @@ hostsRouter.get("/", async (req, res) => {
 hostsRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
 
-  const result = await knex("hosts").where({ id }).first();
-  if (!result) {
-    return res.status(404).json({ error: "Host entry not found" });
+  // Validate that `id` is a number
+  if (isNaN(id)) {
+    return res
+      .status(400)
+      .json({ error: "Invalid host ID. ID must be a number." });
   }
-  res.json(result);
+
+  try {
+    const result = await knex("hosts").where({ id }).first();
+
+    if (!result) {
+      return res.status(404).json({ error: "Host not found." });
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error("Error fetching host:", error.message);
+    res.status(500).json({ error: "Internal server error." });
+  }
 });
 
 // Create a new host entry
 hostsRouter.post("/", async (req, res) => {
-  const { name, email, phone, address, password } = req.body;
+  const { name, email, phone, address, password, details } = req.body;
 
   // Hash the password for security if bcrypt is enabled
   // const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,7 +58,8 @@ hostsRouter.post("/", async (req, res) => {
       email,
       phone,
       address,
-      password, // Replace this with 'hashedPassword' if using bcrypt
+      password,
+      details, // Replace this with 'hashedPassword' if using bcrypt
     })
     .returning("*");
 

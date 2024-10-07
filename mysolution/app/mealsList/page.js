@@ -3,25 +3,18 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import styles from "../page.module.css";
 import { Grid2 } from "@mui/material"; // Make sure you're importing Grid2 correctly
 import TextField from "@mui/material/TextField";
-
 import Modal from "../components/Modal";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import Meal from "../components/Meal";
+import styles from "../page.module.css";
 
 const fetchData = async (sortedState) => {
-  const url =
-    sortedState === "asc"
-      ? `https://meal-sharing-final-backend.onrender.com/meals?sortDir=asc`
-      : `https://meal-sharing-final-backend.onrender.com/meals`;
+  const url = `https://meal-sharing-final-backend.onrender.com/meals?sortKey=id&sortDir=${sortedState}`;
 
   const response = await fetch(url);
   const data = await response.json();
@@ -60,6 +53,7 @@ export default function Meals() {
   const [currentMealId, setCurrentMealId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortedState, setSortedState] = useState("desc");
+  const [statusState, setStatusState] = useState("Active");
 
   const handleSearchClick = async () => {
     try {
@@ -72,8 +66,12 @@ export default function Meals() {
       console.error("Error searching meals:", err);
     }
   };
+  const handleSorting = async (direction) => {
+    setSortedState(direction);
+    console.log("direction " + direction);
+  };
 
-  const handleOpenModal = async (mealId, sortedState) => {
+  const handleOpenModal = async (mealId) => {
     try {
       const meal = await fetchDataSingle(mealId, sortedState);
       setSingleMeal(meal[0]);
@@ -123,47 +121,22 @@ export default function Meals() {
         <div>
           <Button>
             {" "}
-            <ArrowUpwardIcon onClick={() => setSortedState("asc")} />
+            <ArrowUpwardIcon onClick={() => handleSorting("asc")} />
           </Button>
           <Button>
             {" "}
-            <ArrowDownwardIcon onClick={() => setSortedState("desc")} />
+            <ArrowDownwardIcon onClick={() => handleSorting("desc")} />
           </Button>
         </div>
         <Grid2 className={styles.grid} container spacing={6}>
           {fetchedMeals.length > 0 ? (
             fetchedMeals.map((meal, index) => (
               <Grid2 item xs={12} sm={6} md={3} key={index}>
-                <Card className={styles.gridCard}>
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{ textAlign: "center", padding: 2, fontWeight: "bold" }}
-                  >
-                    {meal.title}
-                  </Typography>
-                  <Avatar
-                    alt={meal.title}
-                    src={meal.image_url}
-                    sx={{ width: 100, height: 100, margin: "auto" }}
-                  />
-                  <CardContent>
-                    <Typography variant="body1">
-                      Reservations: {meal.max_reservations}
-                    </Typography>
-                    <Typography variant="h6" color="textSecondary">
-                      Price: {meal.price}
-                    </Typography>
-                  </CardContent>
-                  <Button
-                    key={index}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleOpenModal(meal.id, sortedState)} // Fix here: Pass function to onClick
-                  >
-                    More info {meal.id}
-                  </Button>
-                </Card>
+                <Meal
+                  meal={meal}
+                  index={index}
+                  handleOpenModal={handleOpenModal}
+                />
               </Grid2>
             ))
           ) : (

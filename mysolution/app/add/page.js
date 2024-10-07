@@ -2,38 +2,68 @@
 
 import * as React from "react";
 import Head from "next/head";
-import Image from "next/image";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
-import Switch from "@mui/material/Switch";
 import styles from "../page.module.css";
 
-const mealTagList = {
-  image: "images/thumbnail.png",
-  tag1: "Share your favourite meal!",
-  tag2: "Tell us about it!",
-  tag3: "Where?",
-  tag4: "$",
-  buttonTxt: "Add meal",
-};
-const reviewTagList = {
-  image: "images/thumbnail.png",
-  tag1: "Number of guests",
-  tag2: "Name",
-  tag3: "Email",
-  tag4: "Phone Number",
-  buttonTxt: "Add Reservation",
-};
-
 export default function Add() {
+  const [mealData, setMealData] = useState({
+    title: "",
+    description: "",
+    location: "",
+    price: "",
+    max_reservations: "",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setMealData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent page reload on form submission
+
+    try {
+      const response = await fetch(
+        "https://meal-sharing-final-backend.onrender.com/meals",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(mealData), // Send the meal data
+        }
+      );
+
+      if (response.ok) {
+        alert("New meal created successfully!");
+        setMealData({
+          title: "",
+          description: "",
+          location: "",
+          price: "",
+          max_reservations: "",
+        });
+      } else {
+        alert("Error creating meal.");
+      }
+    } catch (error) {
+      console.error("Error creating meal:", error);
+      alert("Error creating meal.");
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
         <title>Add Meal</title>
-        <meta name="description" content="add" />
+        <meta name="description" content="Add a new meal" />
         <meta charSet="UTF-8" />
       </Head>
 
@@ -41,22 +71,28 @@ export default function Add() {
         <Container maxWidth="md">
           <Box className={styles.header}>
             <Typography variant="h4" component="h1">
-              Add meal
+              Add Meal
             </Typography>
           </Box>
         </Container>
 
         <Container maxWidth="md">
-          <Box component="form" sx={{ mt: 4, pt: 0, pl: 20, pr: 20 }}>
+          <Box
+            component="form"
+            sx={{ mt: 4, pt: 0, pl: 20, pr: 20 }}
+            onSubmit={handleSubmit} // Bind handleSubmit to form submit
+          >
             {/* Input for Meal Name */}
             <Box sx={{ mb: 3 }}>
-              <label htmlFor="mealName">Meal Name</label>
+              <label htmlFor="title">Meal Name</label>
               <TextField
-                id="mealName"
+                id="title"
                 variant="outlined"
                 fullWidth
                 required
                 aria-label="Meal Name"
+                value={mealData.title}
+                onChange={handleChange}
               />
             </Box>
 
@@ -71,18 +107,22 @@ export default function Add() {
                 rows={4}
                 required
                 aria-label="Description"
+                value={mealData.description}
+                onChange={handleChange}
               />
             </Box>
 
             {/* Input for Place */}
             <Box sx={{ mb: 3 }}>
-              <label htmlFor="place">Place</label>
+              <label htmlFor="location">Place</label>
               <TextField
-                id="place"
+                id="location"
                 variant="outlined"
                 fullWidth
                 required
                 aria-label="Place"
+                value={mealData.location}
+                onChange={handleChange}
               />
             </Box>
 
@@ -96,6 +136,23 @@ export default function Add() {
                 fullWidth
                 required
                 aria-label="Price"
+                value={mealData.price}
+                onChange={handleChange}
+              />
+            </Box>
+
+            {/* Input for Max Reservations */}
+            <Box sx={{ mb: 3 }}>
+              <label htmlFor="max_reservations">Max Reservations</label>
+              <TextField
+                id="max_reservations"
+                type="number"
+                variant="outlined"
+                fullWidth
+                required
+                aria-label="Max Reservations"
+                value={mealData.max_reservations}
+                onChange={handleChange}
               />
             </Box>
 

@@ -24,7 +24,15 @@ export default function BecomeHost() {
     details: "",
   });
 
-  async function handleSubmit() {
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+  async function handleSubmit(e) {
+    e.preventDefault();
     try {
       const response = await fetch(
         "https://meal-sharing-final-backend.onrender.com/hosts",
@@ -77,6 +85,7 @@ export default function BecomeHost() {
               right: "2px",
               margin: "2px",
             }}
+            onSubmit={handleSubmit}
           >
             <Typography variant="h4" gutterBottom>
               Become a Host
@@ -88,30 +97,35 @@ export default function BecomeHost() {
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                onChange={handleChange}
               />
               <TextField
                 label="Email*"
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                onChange={handleChange}
               />
               <TextField
                 label="Password*"
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                onChange={handleChange}
               />
               <TextField
                 label="Phone Number"
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                onChange={handleChange}
               />
               <TextField
                 label="City"
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                onChange={handleChange}
               />
               <TextField
                 label="Meal Details"
@@ -120,6 +134,7 @@ export default function BecomeHost() {
                 rows={4}
                 fullWidth
                 margin="normal"
+                onChange={handleChange}
               />
               <Button
                 type="submit"
@@ -127,7 +142,6 @@ export default function BecomeHost() {
                 color="primary"
                 fullWidth
                 sx={{ mt: 2 }}
-                onClick={handleSubmit}
               >
                 Submit
               </Button>

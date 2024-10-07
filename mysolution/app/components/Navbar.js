@@ -14,13 +14,15 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import { useAuth } from "../../AuthContext";
 import styles from "../page.module.css";
+import { isNull } from "@grafana/faro-web-sdk";
 
 export default function Navbar() {
   // State to control drawer
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+  const { user, logout } = useAuth();
   // Toggle Drawer Open/Close
   const toggleDrawer = (open) => (event) => {
     if (
@@ -103,11 +105,27 @@ export default function Navbar() {
               </Link>
             </Button>
 
-            <Button color="inherit" sx={{ mx: 1 }}>
-              <Link href="/login" passHref>
-                Login
-              </Link>
-            </Button>
+            {user && (
+              <Button color="inherit" sx={{ mx: 1 }}>
+                <Link href="/add" passHref>
+                  Add Meal
+                </Link>
+              </Button>
+            )}
+
+            {user && (
+              <Button color="inherit" sx={{ mx: 1 }} onClick={() => logout()}>
+                Log Out
+              </Button>
+            )}
+            {!user && (
+              <Button color="inherit" sx={{ mx: 1 }}>
+                <Link href="/login" passHref>
+                  Login
+                </Link>
+              </Button>
+            )}
+
             {/* Language switcher */}
             {/* <div>
               <Link href={router.asPath} locale="en">

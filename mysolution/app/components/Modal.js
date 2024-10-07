@@ -3,7 +3,8 @@ import styles from "../page.module.css";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
+import ReviewBox from "./ReviewBox";
+import { useAuth } from "../../AuthContext";
 export default function ModalComponent({
   isOpen,
   setIsOpen,
@@ -16,12 +17,15 @@ export default function ModalComponent({
   const [isMoved, setIsMoved] = useState(false);
   const [backdropVisible, setBackdropVisible] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [statusState, setStatusState] = useState("Unknown");
+  const { user } = useAuth();
 
   const fetchDataSingle = async (mealId) => {
     try {
       const response = await fetch(
         `https://meal-sharing-final-backend.onrender.com/meals/${mealId}`
       );
+
       if (!response.ok) throw new Error("Failed to fetch meal data");
       const data = await response.json();
       console.log("Fetched meal data:", data);
@@ -113,7 +117,11 @@ export default function ModalComponent({
                 </Typography>
                 <Image
                   alt={singleMeal.title}
-                  src={singleMeal.image_url}
+                  src={
+                    singleMeal.image_url
+                      ? singleMeal.image_url
+                      : "./images/empty.jpg"
+                  }
                   width={300}
                   height={300}
                   layout="intrinsic"
@@ -131,6 +139,10 @@ export default function ModalComponent({
                   </Typography>
                 </Typography>
                 <Typography>Price: {singleMeal.price}</Typography>
+
+                <Typography variant="h6" color="textSecondary">
+                  Status: {statusState}
+                </Typography>
               </>
             ) : (
               <Typography>Failed to load meal data</Typography>
@@ -142,13 +154,15 @@ export default function ModalComponent({
             >
               Close
             </Button>
-            <Button
-              onClick={() => alert("reserved")}
-              variant="outlined"
-              sx={{ mt: 2 }}
-            >
-              Reserve
-            </Button>
+            {user && (
+              <Button
+                onClick={() => alert("reserved")}
+                variant="outlined"
+                sx={{ mt: 2 }}
+              >
+                Reserve
+              </Button>
+            )}
             <Button
               onClick={handleToggleReviews}
               variant="outlined"
@@ -161,35 +175,7 @@ export default function ModalComponent({
       )}
 
       {/* The Reviews box, appearing on the right */}
-      {isOpenReviews && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: "10%",
-            right: "5%",
-            width: 400,
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 3,
-            overflowY: "scroll", // In case reviews exceed box height
-            maxHeight: "80%", // Limit the max height
-          }}
-        >
-          <Typography variant="h6">Reviews</Typography>
-          {reviews && reviews.length > 0 ? (
-            reviews.map((review, index) => (
-              <Box key={index} sx={{ mt: 2 }}>
-                <Typography variant="body1">{review.title}</Typography>
-                <Typography variant="body2">* {review.description}</Typography>
-                <Typography variant="body2">* {review.stars}</Typography>
-              </Box>
-            ))
-          ) : (
-            <Typography>No Reviews Available</Typography>
-          )}
-        </Box>
-      )}
+      {isOpenReviews && <ReviewBox reviews={reviews} />}
     </>
   );
 }

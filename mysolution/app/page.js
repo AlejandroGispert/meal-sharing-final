@@ -107,11 +107,7 @@ export default function Home() {
 
         <Box className={styles.transcript}>
           <h2>Video Transcript</h2>
-          <p>
-            This video showcases the Salsa Casino Dans school, highlighting
-            various dance moves, lessons, and student performances. Learn more
-            about our classes and events at Salsa Casino Dans.
-          </p>
+          <p>This video showcases a delitious meal.</p>
         </Box>
       </div>{" "}
     </motion.div>
