@@ -42,7 +42,7 @@ export default function ReserveBox({ mealId }) {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload on form submission
     console.log(reservationData);
-    console.log(mealId);
+
     try {
       const response = await fetch(
         "https://meal-sharing-final-backend.onrender.com/reservations",
@@ -59,8 +59,8 @@ export default function ReserveBox({ mealId }) {
         alert("New reservation added!");
         setReservationData({
           number_of_guests: "",
-          contact_phonenumber: "",
           meal_id: mealId,
+          contact_phonenumber: "",
           contact_name: "",
           contact_email: "",
         });
