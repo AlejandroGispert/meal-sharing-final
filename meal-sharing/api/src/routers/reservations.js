@@ -23,7 +23,8 @@ reservationsRouter.post("/", async (req, res) => {
     contact_phonenumber,
     meal_id,
     number_of_guests,
-  } = req.query;
+  } = req.body; // Changed to req.body
+
   try {
     await knex("Reservation").insert({
       contact_email,
@@ -63,7 +64,7 @@ reservationsRouter.put("/:id", async (req, res) => {
     contact_phonenumber,
     meal_id,
     number_of_guests,
-  } = req.query;
+  } = req.body; // Changed to req.body
 
   await knex("Reservation").where({ id: id }).update({
     contact_email,

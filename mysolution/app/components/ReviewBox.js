@@ -27,7 +27,7 @@ export default function ({ reviews }) {
             <Typography variant="body1">{review.title}</Typography>
             <Typography variant="body2">* {review.description}</Typography>
             <Typography variant="body2">* {review.stars}</Typography>
-            {user && <Button>Add Review</Button>}
+            {/* {user && <Typography> review owner</Typography>} */}
           </Box>
         ))
       ) : (

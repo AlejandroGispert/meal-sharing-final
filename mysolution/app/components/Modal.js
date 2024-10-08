@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import ReviewBox from "./ReviewBox";
 import { useAuth } from "../../AuthContext";
+import Modal2 from "./Modal2";
+
 export default function ModalComponent({
   isOpen,
   setIsOpen,
@@ -14,6 +16,8 @@ export default function ModalComponent({
   const [singleMeal, setSingleMeal] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [isOpenReviews, setIsOpenReviews] = useState(false);
+  const [openAddReviewPart, setIsOpenAddReviewPart] = useState(false);
+
   const [isMoved, setIsMoved] = useState(false);
   const [backdropVisible, setBackdropVisible] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -82,6 +86,10 @@ export default function ModalComponent({
     setIsOpenReviews((prev) => !prev);
     setIsMoved(true); // Move the modal to the left
     setBackdropVisible(false); // Hide the backdrop
+  };
+
+  const ToggleAddReview = () => {
+    setIsOpenAddReviewPart((prev) => !prev);
   };
 
   return (
@@ -170,6 +178,21 @@ export default function ModalComponent({
             >
               {isOpenReviews ? "Hide Reviews" : "Show Reviews"}
             </Button>
+            {user && (
+              <Button
+                onClick={ToggleAddReview}
+                variant="outlined"
+                sx={{ mt: 2 }}
+              >
+                {!openAddReviewPart ? "Add Reviews" : "Hide"}
+              </Button>
+            )}
+            {openAddReviewPart && (
+              <Box>
+                {/* Add review form here */}
+                <Modal2 mealId={currentMealId} />
+              </Box>
+            )}
           </Box>
         </Modal>
       )}

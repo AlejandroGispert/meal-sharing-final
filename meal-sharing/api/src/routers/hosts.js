@@ -47,23 +47,26 @@ hostsRouter.get("/:id", async (req, res) => {
 
 // Create a new host entry
 hostsRouter.post("/", async (req, res) => {
-  const { name, email, phone, address, password, details } = req.body;
+  const { full_name, email, phone, address, password, details } = req.body;
 
   // Hash the password for security if bcrypt is enabled
   // const hashedPassword = await bcrypt.hash(password, 10);
-
-  const result = await knex("hosts")
-    .insert({
-      name,
+  try {
+    await knex("hosts").insert({
+      full_name,
       email,
       phone,
       address,
       password,
-      details, // Replace this with 'hashedPassword' if using bcrypt
-    })
-    .returning("*");
+      details,
+      created_at: knex.fn.now(), // Replace this with 'hashedPassword' if using bcrypt
+    });
 
-  res.status(201).json(result[0]); // returning the inserted row
+    res.status(201).send("New Meal created successfully.");
+  } catch (error) {
+    console.error("Error creating meal:", error);
+    res.status(500).send("Error creating meal.");
+  }
 });
 
 // Update an existing host entry

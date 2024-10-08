@@ -13,15 +13,16 @@ reviewsRouter.get("/", async (req, res) => {
   }
 });
 
+// ('Buenisimo', 'Italiano perfecctisima la mama del la comida', 1,5),('thunder', 'the food was stormy', 2,3)
 reviewsRouter.post("/", async (req, res) => {
-  // ('Buenisimo', 'Italiano perfecctisima la mama del la comida', 1,5),('thunder', 'the food was stormy', 2,3)
-  const { description, meal_id, stars, title } = req.query;
+  const { description, meal_id, stars, title } = req.body; // changed to req.body
   try {
     await knex("Review").insert({
       description,
       meal_id,
       stars,
       title,
+      created_date: knex.fn.now(),
     });
 
     res.status(201).send("Review created successfully.");
@@ -44,7 +45,7 @@ reviewsRouter.get("/:id", async (req, res) => {
 
 reviewsRouter.put("/:id", async (req, res) => {
   const id = req.params.id;
-  const { description, meal_id, stars, title } = req.query;
+  const { description, meal_id, stars, title } = req.body; // changed to req.body
 
   await knex("Review").where({ id: id }).update({
     description,
@@ -54,7 +55,6 @@ reviewsRouter.put("/:id", async (req, res) => {
   });
   res.send("The review database has been updated");
 });
-
 reviewsRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
 

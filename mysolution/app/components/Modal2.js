@@ -9,124 +9,124 @@ import Typography from "@mui/material/Typography";
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import Switch from "@mui/material/Switch";
+import StarRating from "./StarRating";
 import styles from "../page.module.css";
 
-const mealTagList = {
-  image: "images/thumbnail.png",
-  tag1: "Share your favourite meal!",
-  tag2: "Tell us about it!",
-  tag3: "Where?",
-  tag4: "$",
-  buttonTxt: "Add meal",
-};
 const reviewTagList = {
   image: "images/thumbnail.png",
-  tag1: "Number of guests",
-  tag2: "Name",
-  tag3: "Email",
-  tag4: "Phone Number",
-  buttonTxt: "Add Reservation",
+  tag1: "Title",
+  tag2: "Description",
+  tag3: "Stars",
+  buttonTxt: "Submit",
 };
-
-export default function Add() {
+export default function Modal2({ mealId }) {
   const [mealOrReviewState, setMealOrReviewState] = useState(true);
+  const [starState, setStarState] = useState(0);
+  const [reviewData, setReviewData] = useState({
+    title: "",
+    description: "",
+    meal_id: "",
+    stars: 0,
+  });
+  const [textAndTagsState, setTextAndTagsState] = useState(reviewTagList);
 
-  const [textAndTagsState, setTextAndTagsState] = useState(mealTagList);
-  function handleSwitch() {
-    setMealOrReviewState(!mealOrReviewState);
+  const handleRatingChange = (selectedRating) => {
+    console.log("Selected Rating:", selectedRating);
+    setStarState(selectedRating);
+    // You can also use this value to set state or perform other actions
+  };
 
-    if (textAndTagsState === mealTagList) {
-      setTextAndTagsState(reviewTagList);
-    } else {
-      setTextAndTagsState(mealTagList);
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setReviewData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent page reload on form submission
+
+    try {
+      const response = await fetch(
+        "https://meal-sharing-final-backend.onrender.com/reviews",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(mealData), // Send the meal data
+        }
+      );
+
+      if (response.ok) {
+        alert("New review added!");
+        setReviewData({
+          title: "",
+          description: "",
+          meal_id: mealId,
+          stars: starState,
+        });
+      } else {
+        alert("Error creating meal.");
+      }
+    } catch (error) {
+      console.error("Error creating meal:", error);
+      alert("Error creating meal.");
     }
-
-    console.log(textAndTagsState.tag1);
-  }
+  };
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Add Meal or Review</title>
-        <meta name="description" content="add" />
-        <meta charSet="UTF-8" />
-      </Head>
+    <Container
+      maxWidth="md"
+      sx={{
+        mt: 5,
+        height: "900px", // Set fixed height to 500 pixels
+        overflowY: "auto",
+      }}
+    >
+      <Typography variant="h5" component="h2">
+        {/* Add meal */}
+        {/* <Switch
+              checked={mealOrReviewState}
+              onChange={handleSwitch}
+              name="mealOrReviewState"
+              color="primary"
+            /> */}
+        Add Review {<StarRating onRatingChange={handleRatingChange} />}
+      </Typography>
+      <Box component="form" sx={{ mt: 4 }} onSubmit={handleSubmit}>
+        {/* Input for Meal Name */}
+        <Box sx={{ mb: 3 }}>
+          <label htmlFor="title">{textAndTagsState.tag1}</label>
+          <TextField
+            id="title"
+            variant="outlined"
+            fullWidth
+            required
+            aria-label={textAndTagsState.tag1}
+            onChange={handleChange}
+          />
+        </Box>
 
-      <main>
-        <Container maxWidth="md">
-          <Box className={styles.header}>
-            <Typography variant="h4" component="h1">
-              Add meal
-              <Switch
-                checked={mealOrReviewState}
-                onChange={handleSwitch}
-                name="mealOrReviewState"
-                color="primary"
-              />
-              Add Review
-            </Typography>
-          </Box>
-        </Container>
+        {/* Input for Description */}
+        <Box sx={{ mb: 3 }}>
+          <label htmlFor="description">{textAndTagsState.tag2}</label>
+          <TextField
+            id="description"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+            required
+            aria-label={textAndTagsState.tag2}
+            onChange={handleChange}
+          />
+        </Box>
 
-        <Container maxWidth="md">
-          <Box component="form" sx={{ mt: 4, pt: 0, pl: 20, pr: 20 }}>
-            {/* Input for Meal Name */}
-            <Box sx={{ mb: 3 }}>
-              <label htmlFor="mealName">{textAndTagsState.tag1}</label>
-              <TextField
-                id="mealName"
-                variant="outlined"
-                fullWidth
-                required
-                aria-label={textAndTagsState.tag1}
-              />
-            </Box>
-
-            {/* Input for Description */}
-            <Box sx={{ mb: 3 }}>
-              <label htmlFor="description">{textAndTagsState.tag2}</label>
-              <TextField
-                id="description"
-                variant="outlined"
-                fullWidth
-                multiline
-                rows={4}
-                required
-                aria-label={textAndTagsState.tag2}
-              />
-            </Box>
-
-            {/* Input for Place */}
-            <Box sx={{ mb: 3 }}>
-              <label htmlFor="place">{textAndTagsState.tag3}</label>
-              <TextField
-                id="place"
-                variant="outlined"
-                fullWidth
-                required
-                aria-label={textAndTagsState.tag3}
-              />
-            </Box>
-
-            {/* Input for Price */}
-            <Box sx={{ mb: 3 }}>
-              <label htmlFor="price">{textAndTagsState.tag4}</label>
-              <TextField
-                id="price"
-                type="number"
-                variant="outlined"
-                fullWidth
-                required
-                aria-label={textAndTagsState.tag4}
-              />
-            </Box>
-
-            {/* Submit Button */}
-            <Button variant="contained" type="submit" aria-label="Submit">
-              {textAndTagsState.buttonTxt}
-            </Button>
-          </Box>
-        </Container>
-      </main>
-    </div>
+        {/* Submit Button */}
+        <Button variant="contained" type="submit" aria-label="Submit">
+          {textAndTagsState.buttonTxt}
+        </Button>
+      </Box>
+    </Container>
   );
 }

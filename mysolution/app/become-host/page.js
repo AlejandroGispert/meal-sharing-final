@@ -16,7 +16,7 @@ import { handleClientScriptLoad } from "next/script";
 export default function BecomeHost() {
   const [city, setCity] = useState("København");
   const [formData, setFormData] = useState({
-    name: "",
+    full_name: "",
     email: "",
     phone: "",
     address: "",
@@ -31,7 +31,7 @@ export default function BecomeHost() {
       [id]: value,
     }));
   };
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -55,7 +55,7 @@ export default function BecomeHost() {
       console.error("Error during submission:", error);
       alert("Failed to submit the form. Please try again.");
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -93,6 +93,7 @@ export default function BecomeHost() {
 
             <form>
               <TextField
+                id="full_name"
                 label="Full Name*"
                 variant="outlined"
                 fullWidth
@@ -100,6 +101,7 @@ export default function BecomeHost() {
                 onChange={handleChange}
               />
               <TextField
+                id="email"
                 label="Email*"
                 variant="outlined"
                 fullWidth
@@ -107,6 +109,7 @@ export default function BecomeHost() {
                 onChange={handleChange}
               />
               <TextField
+                id="password"
                 label="Password*"
                 variant="outlined"
                 fullWidth
@@ -114,6 +117,7 @@ export default function BecomeHost() {
                 onChange={handleChange}
               />
               <TextField
+                id="number"
                 label="Phone Number"
                 variant="outlined"
                 fullWidth
@@ -121,6 +125,7 @@ export default function BecomeHost() {
                 onChange={handleChange}
               />
               <TextField
+                id="address"
                 label="City"
                 variant="outlined"
                 fullWidth
@@ -128,6 +133,7 @@ export default function BecomeHost() {
                 onChange={handleChange}
               />
               <TextField
+                id="details"
                 label="Meal Details"
                 variant="outlined"
                 multiline
