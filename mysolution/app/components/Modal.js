@@ -11,6 +11,7 @@ import ReserveBox from "./ReserveBox";
 const calculateRemainingReservations = (reservations) => {
   // Step 1: Sum the total number of guests
   const totalGuests = reservations.reduce((total, reservation) => {
+    console.log("total number of guests: ", reservation.number_of_guests);
     return total + reservation.number_of_guests;
   }, 0);
 
@@ -195,20 +196,21 @@ export default function ModalComponent({
                 <Typography>Price: {singleMeal.price}</Typography>
 
                 {/* Display Remaining Reservations */}
-                <Typography
-                  variant="body1"
-                  sx={{
-                    color: remainingReservations > 0 ? "green" : "red", // Change color based on availability
-                    fontWeight: "bold",
-                  }}
-                >
+                <Typography variant="body1">
                   Reservations left:{" "}
                   {remainingReservations !== null
                     ? remainingReservations
                     : "Calculating..."}
                 </Typography>
 
-                <Typography variant="h6" color="textSecondary">
+                <Typography
+                  variant="h6"
+                  color="textSecondary"
+                  sx={{
+                    color: remainingReservations > 0 ? "green" : "red", // Change color based on availability
+                    fontWeight: "bold",
+                  }}
+                >
                   Status:{" "}
                   {remainingReservations > 0 ? "Available" : "Not Available"}
                 </Typography>

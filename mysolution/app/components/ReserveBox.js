@@ -69,7 +69,7 @@ export default function ReserveBox({ mealId }) {
       const url = `https://meal-sharing-final-backend.onrender.com/reservations?${queryString}`;
 
       const response = await fetch(url, {
-        method: "GET", // Changed to GET to use query params (could be POST, but sending params via URL)
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
