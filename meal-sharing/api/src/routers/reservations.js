@@ -23,21 +23,31 @@ reservationsRouter.post("/", async (req, res) => {
     contact_phonenumber,
     meal_id,
     number_of_guests,
-  } = req.body; // Changed to req.body
+  } = req.query; // Use req.body to properly capture POST body data
+
+  if (
+    !contact_email ||
+    !contact_name ||
+    !contact_phonenumber ||
+    !meal_id ||
+    !number_of_guests
+  ) {
+    return res.status(400).send("All fields are required.");
+  }
 
   try {
     await knex("Reservation").insert({
-      number_of_guests,
-      meal_id,
-      created_date: knex.fn.now(),
-      contact_phonenumber,
-      contact_name,
       contact_email,
+      contact_name,
+      contact_phonenumber,
+      meal_id,
+      number_of_guests, // This must be provided
+      created_date: knex.fn.now(), // Add created_date with current timestamp
     });
 
     res.status(201).send("Reservation created successfully.");
   } catch (error) {
-    console.error(error);
+    console.error("Error creating reservation:", error);
     res.status(500).send("Error creating reservation.");
   }
 });

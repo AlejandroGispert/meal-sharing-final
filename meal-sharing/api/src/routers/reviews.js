@@ -15,7 +15,12 @@ reviewsRouter.get("/", async (req, res) => {
 
 // ('Buenisimo', 'Italiano perfecctisima la mama del la comida', 1,5),('thunder', 'the food was stormy', 2,3)
 reviewsRouter.post("/", async (req, res) => {
-  const { description, meal_id, stars, title } = req.body; // changed to req.body
+  const { description, meal_id, stars, title } = req.query; // changed to req.body
+
+  if (!description || !meal_id || !stars || !title) {
+    return res.status(400).send("All fields are required.");
+  }
+
   try {
     await knex("Review").insert({
       description,
