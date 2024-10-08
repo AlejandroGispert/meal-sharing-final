@@ -117,7 +117,7 @@ export default function BecomeHost() {
                 onChange={handleChange}
               />
               <TextField
-                id="number"
+                id="phone"
                 label="Phone Number"
                 variant="outlined"
                 fullWidth

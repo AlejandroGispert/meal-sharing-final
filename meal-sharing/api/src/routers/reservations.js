@@ -7,7 +7,7 @@ reservationsRouter.get("/", async (req, res) => {
   const allReservations = await knex
     .select("*")
     .from("Reservation")
-    .orderBy("ID", "ASC");
+    .orderBy("id", "ASC");
 
   if (allReservations.length > 0) {
     res.send(allReservations);

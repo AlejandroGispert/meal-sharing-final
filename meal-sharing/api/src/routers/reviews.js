@@ -4,7 +4,7 @@ import knex from "../database_client.js";
 const reviewsRouter = express.Router();
 
 reviewsRouter.get("/", async (req, res) => {
-  const allReviews = await knex.select("*").from("Review").orderBy("ID", "ASC");
+  const allReviews = await knex.select("*").from("Review").orderBy("id", "ASC");
 
   if (allReviews.length > 0) {
     res.send(allReviews);

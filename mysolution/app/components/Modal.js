@@ -6,6 +6,7 @@ import Image from "next/image";
 import ReviewBox from "./ReviewBox";
 import { useAuth } from "../../AuthContext";
 import Modal2 from "./Modal2";
+import ReserveBox from "./ReserveBox";
 
 export default function ModalComponent({
   isOpen,
@@ -16,6 +17,8 @@ export default function ModalComponent({
   const [singleMeal, setSingleMeal] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [isOpenReviews, setIsOpenReviews] = useState(false);
+  const [isOpenReserve, setIsOpenReserve] = useState(false);
+
   const [openAddReviewPart, setIsOpenAddReviewPart] = useState(false);
 
   const [isMoved, setIsMoved] = useState(false);
@@ -91,6 +94,9 @@ export default function ModalComponent({
   const ToggleAddReview = () => {
     setIsOpenAddReviewPart((prev) => !prev);
   };
+  const ToggleReserves = () => {
+    setIsOpenReserve((prev) => !prev);
+  };
 
   return (
     <>
@@ -164,11 +170,11 @@ export default function ModalComponent({
             </Button>
             {user && (
               <Button
-                onClick={() => alert("reserved")}
+                onClick={ToggleReserves}
                 variant="outlined"
                 sx={{ mt: 2 }}
               >
-                Reserve
+                {isOpenReserve ? "Hide" : "Reserve"}
               </Button>
             )}
             <Button
@@ -193,6 +199,7 @@ export default function ModalComponent({
                 <Modal2 mealId={currentMealId} />
               </Box>
             )}
+            {isOpenReserve && <ReserveBox mealId={currentMealId} />}
           </Box>
         </Modal>
       )}
