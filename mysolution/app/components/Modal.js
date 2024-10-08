@@ -8,6 +8,23 @@ import { useAuth } from "../../AuthContext";
 import Modal2 from "./Modal2";
 import ReserveBox from "./ReserveBox";
 
+const calculateRemainingReservations = (reservations) => {
+  // Step 1: Sum the total number of guests
+  const totalGuests = reservations.reduce((total, reservation) => {
+    return total + reservation.number_of_guests;
+  }, 0);
+
+  // Step 2: Get the maximum reservations from the first reservation (assuming it's the same for all)
+  const maxReservations =
+    reservations.length > 0 ? reservations[0].max_reservations : 0;
+
+  // Step 3: Calculate remaining reservations
+  const remainingReservations = maxReservations - totalGuests;
+
+  // Ensure the remaining reservations are not negative
+  return remainingReservations >= 0 ? remainingReservations : 0;
+};
+
 export default function ModalComponent({
   isOpen,
   setIsOpen,
@@ -18,13 +35,13 @@ export default function ModalComponent({
   const [reviews, setReviews] = useState([]);
   const [isOpenReviews, setIsOpenReviews] = useState(false);
   const [isOpenReserve, setIsOpenReserve] = useState(false);
-
   const [openAddReviewPart, setIsOpenAddReviewPart] = useState(false);
-
   const [isMoved, setIsMoved] = useState(false);
   const [backdropVisible, setBackdropVisible] = useState(true);
   const [loading, setLoading] = useState(true);
   const [statusState, setStatusState] = useState("Unknown");
+  const [isAvailable, setSAvailabilityState] = useState([]);
+
   const { user } = useAuth();
 
   const fetchDataSingle = async (mealId) => {
@@ -58,6 +75,21 @@ export default function ModalComponent({
     }
   };
 
+  const fetchAvailable = async (mealId) => {
+    try {
+      const response = await fetch(
+        `https://meal-sharing-final-backend.onrender.com/meals/${mealId}/available-reservations`
+      );
+      if (!response.ok) throw new Error("Failed to fetch availability");
+      const data = await response.json();
+      console.log("Fetched availability:", data);
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
@@ -66,13 +98,17 @@ export default function ModalComponent({
       fetchDataSingle(currentMealId).then((meal) => {
         if (meal) {
           setSingleMeal(Array.isArray(meal) ? meal[0] : meal);
-          setLoading(false); //Stop loading after fetch completes
+          setLoading(false); // Stop loading after fetch completes
         } else {
           setLoading(false); // Stop loading even if fetch fails
         }
       });
 
       fetchReviews(currentMealId).then((review) => setReviews(review));
+
+      fetchAvailable(currentMealId).then((availability) =>
+        setSAvailabilityState(availability)
+      );
     }
 
     return () => {};
@@ -98,9 +134,14 @@ export default function ModalComponent({
     setIsOpenReserve((prev) => !prev);
   };
 
+  // Calculate remaining reservations if the meal and availability are fetched
+  const remainingReservations =
+    singleMeal && isAvailable.length > 0
+      ? calculateRemainingReservations(isAvailable)
+      : null;
+
   return (
     <>
-      {/* Ensure the isOpen is passed correctly */}
       {typeof isOpen !== "undefined" && (
         <Modal
           open={isOpen}
@@ -122,7 +163,7 @@ export default function ModalComponent({
               transition: "left 0.5s ease", // Add smooth transition for moving
             }}
           >
-            {loading ? ( // Display loading indicator while data is being fetched
+            {loading ? (
               <Typography>Loading...</Typography>
             ) : singleMeal ? (
               <>
@@ -143,7 +184,6 @@ export default function ModalComponent({
                 <Typography id="simple-modal-description" sx={{ mt: 2 }}>
                   Description: {singleMeal.description}
                 </Typography>
-
                 <Typography variant="body1">
                   Place: {singleMeal.location}
                 </Typography>
@@ -154,8 +194,23 @@ export default function ModalComponent({
                 </Typography>
                 <Typography>Price: {singleMeal.price}</Typography>
 
+                {/* Display Remaining Reservations */}
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: remainingReservations > 0 ? "green" : "red", // Change color based on availability
+                    fontWeight: "bold",
+                  }}
+                >
+                  Reservations left:{" "}
+                  {remainingReservations !== null
+                    ? remainingReservations
+                    : "Calculating..."}
+                </Typography>
+
                 <Typography variant="h6" color="textSecondary">
-                  Status: {statusState}
+                  Status:{" "}
+                  {remainingReservations > 0 ? "Available" : "Not Available"}
                 </Typography>
               </>
             ) : (
@@ -195,7 +250,6 @@ export default function ModalComponent({
             )}
             {openAddReviewPart && (
               <Box>
-                {/* Add review form here */}
                 <Modal2 mealId={currentMealId} />
               </Box>
             )}
@@ -204,7 +258,6 @@ export default function ModalComponent({
         </Modal>
       )}
 
-      {/* The Reviews box, appearing on the right */}
       {isOpenReviews && <ReviewBox reviews={reviews} />}
     </>
   );

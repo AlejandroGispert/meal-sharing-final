@@ -43,7 +43,12 @@ export default function SingleMeal() {
     };
 
     getData();
-  }, []);
+
+    const intervalId = setInterval(getData, 5000); // Fetch data every 5 seconds
+
+    // Clear the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [id]);
 
   const handleChangeInput = (event) => {
     setInputValue(event.target.value);

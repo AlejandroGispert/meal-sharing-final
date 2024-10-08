@@ -5,6 +5,7 @@ const mealsRouter = express.Router();
 
 mealsRouter.get("/", async (req, res) => {
   try {
+    // Start with the base query from the Meal table
     let query = knex("Meal")
       .select("Meal.*", "images.image_url") // Select all fields from Meal and image_url from images
       .leftJoin("images", "Meal.image_id", "images.id");
@@ -55,17 +56,20 @@ mealsRouter.get("/", async (req, res) => {
 
     // Get available reservations directly in the meal query
     if (availableReservationsApi) {
-      query = query.whereExists(function () {
-        this.select("*")
-          .from("Reservation")
-          .whereRaw("Reservation.meal_id = Meal.id") // Correctly reference the outer Meal table
-          .groupBy("Reservation.meal_id")
-          .havingRaw(
-            "Meal.max_reservations - SUM(Reservation.number_of_guests) > 0"
-          );
-      });
+      query = knex("Meal")
+        .select(
+          "Meal.*", // Select all fields from Meal
+          "images.image_url", // Select image URL
+          knex.raw(
+            "COALESCE(Meal.max_reservations - COALESCE(SUM(Reservation.number_of_guests), 0), Meal.max_reservations) AS remaining_reservations"
+          )
+        )
+        .from("Meal") // Explicitly specify FROM clause
+        .leftJoin("images", "Meal.image_id", "images.id") // Join with images
+        .leftJoin("Reservation", "Meal.id", "Reservation.meal_id") // Join with Reservation
+        .groupBy("Meal.id");
+      console.log(query.toString());
     }
-
     const meals = await query; // Execute the query
 
     if (meals.length > 0) {
@@ -108,13 +112,18 @@ mealsRouter.get("/:id", async (req, res) => {
       .json({ error: "Invalid meal ID. ID must be a number." });
   }
 
+  // Check if the query parameter is present
+
   try {
-    // Query the database with a left join to include the image URL
-    const fetchedItem = await knex("Meal")
+    // Base query to fetch the meal
+    const query = knex("Meal")
       .select("Meal.*", "images.image_url") // Select fields from both tables
-      .leftJoin("images", "Meal.image_id", "images.id") // Perform a LEFT JOIN
-      .where("Meal.id", id)
-      .first(); // Use .first() to get a single object instead of an array
+      .leftJoin("images", "Meal.image_id", "images.id"); // Perform a LEFT JOIN
+
+    // If the query parameter is set, include remaining reservations in the query
+
+    // Complete the query
+    const fetchedItem = await query.where("Meal.id", id).first(); // Use .first() to get a single object instead of an array
 
     // Check if the meal exists
     if (fetchedItem) {
@@ -199,6 +208,31 @@ mealsRouter.delete("/:meal_id/reviews", async (req, res) => {
     res.send("The reviews have been deleted");
   } else {
     res.status(404).send("No reviews found for that meal ID");
+  }
+});
+
+mealsRouter.get("/:id/available-reservations", async (req, res) => {
+  const mealId = req.params.id;
+
+  try {
+    // Query to get max_reservations and sum of number_of_guests for the meal
+    const result = await knex("Reservation")
+      .select(
+        "Reservation.id",
+        "Reservation.number_of_guests",
+        "Meal.max_reservations" // Selecting the max_reservations from the Meal table
+      )
+      .leftJoin("Meal", "Reservation.meal_id", "Meal.id") // Joining with the Meal table
+      .where("Reservation.meal_id", mealId);
+
+    if (result.length > 0) {
+      res.json(result);
+    } else {
+      res.status(404).json({ error: "Meal not found or no reservations yet." });
+    }
+  } catch (error) {
+    console.error("Error fetching available reservations:", error);
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 
