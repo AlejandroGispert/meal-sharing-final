@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import Head from "next/head";
 import Image from "next/image";
@@ -20,43 +18,67 @@ const reservationTagList = {
   tag4: "Number of guests",
   buttonTxt: "Submit Reservation",
 };
+
 export default function ReserveBox({ mealId }) {
   const [mealOrReviewState, setMealOrReviewState] = useState(true);
 
   const [reservationData, setReservationData] = useState({
     number_of_guests: "",
     contact_phonenumber: "",
-    meal_id: "",
+    meal_id: mealId,
     contact_name: "",
     contact_email: "",
   });
+
   const [textAndTagsState, setTextAndTagsState] = useState(reservationTagList);
+
+  // Function to convert data to query string format
+  const toQueryString = (data) =>
+    Object.keys(data)
+      .map(
+        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+      )
+      .join("&");
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setReservationData((prevData) => ({
       ...prevData,
-      [id]: value,
+      [id]:
+        id === "meal_id" || id === "number_of_guests" ? parseInt(value) : value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload on form submission
-    console.log(reservationData);
+
+    // Basic form validation
+    if (
+      !reservationData.contact_name ||
+      !reservationData.contact_email ||
+      !reservationData.contact_phonenumber ||
+      !reservationData.number_of_guests ||
+      !reservationData.meal_id
+    ) {
+      alert("Please fill in all the fields.");
+      return;
+    }
 
     try {
-      const response = await fetch(
-        "https://meal-sharing-final-backend.onrender.com/reservations",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(reservationData), // Send the meal data
-        }
-      );
+      const queryString = toQueryString(reservationData);
+      const url = `https://meal-sharing-final-backend.onrender.com/reservations?${queryString}`;
+
+      const response = await fetch(url, {
+        method: "GET", // Changed to GET to use query params (could be POST, but sending params via URL)
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
         alert("New reservation added!");
+
+        // Reset form
         setReservationData({
           number_of_guests: "",
           meal_id: mealId,
@@ -72,31 +94,25 @@ export default function ReserveBox({ mealId }) {
       alert("Error creating reservation.");
     }
   };
+
   return (
     <Container
       maxWidth="md"
       sx={{
         mt: 5,
-        height: "900px", // Set fixed height to 500 pixels
+        height: "900px", // Set fixed height to 900 pixels
         overflowY: "auto",
       }}
     >
       <Typography variant="h5" component="h2">
-        {/* Add meal */}
-        {/* <Switch
-              checked={mealOrReviewState}
-              onChange={handleSwitch}
-              name="mealOrReviewState"
-              color="primary"
-            /> */}
         Make Reservation
       </Typography>
       <Box component="form" sx={{ mt: 4 }} onSubmit={handleSubmit}>
-        {/* Input for Meal Name */}
+        {/* Input for Contact Name */}
         <Box sx={{ mb: 3 }}>
-          <label htmlFor="number_of_guests">{textAndTagsState.tag1}</label>
+          <label htmlFor="contact_name">{textAndTagsState.tag1}</label>
           <TextField
-            id="number_of_guests"
+            id="contact_name"
             variant="outlined"
             fullWidth
             required
@@ -105,11 +121,11 @@ export default function ReserveBox({ mealId }) {
           />
         </Box>
 
-        {/* Input for Description */}
+        {/* Input for Contact Email */}
         <Box sx={{ mb: 3 }}>
-          <label htmlFor="contact_phonenumber">{textAndTagsState.tag2}</label>
+          <label htmlFor="contact_email">{textAndTagsState.tag2}</label>
           <TextField
-            id="contact_phonenumber"
+            id="contact_email"
             variant="outlined"
             fullWidth
             rows={4}
@@ -118,10 +134,12 @@ export default function ReserveBox({ mealId }) {
             onChange={handleChange}
           />
         </Box>
+
+        {/* Input for Phone Number */}
         <Box sx={{ mb: 3 }}>
-          <label htmlFor="contact_name">{textAndTagsState.tag3}</label>
+          <label htmlFor="contact_phonenumber">{textAndTagsState.tag3}</label>
           <TextField
-            id="contact_name"
+            id="contact_phonenumber"
             variant="outlined"
             fullWidth
             required
@@ -129,10 +147,12 @@ export default function ReserveBox({ mealId }) {
             onChange={handleChange}
           />
         </Box>
+
+        {/* Input for Number of Guests */}
         <Box sx={{ mb: 3 }}>
-          <label htmlFor="contact_email">{textAndTagsState.tag4}</label>
+          <label htmlFor="number_of_guests">{textAndTagsState.tag4}</label>
           <TextField
-            id="contact_email"
+            id="number_of_guests"
             variant="outlined"
             fullWidth
             required
@@ -140,6 +160,7 @@ export default function ReserveBox({ mealId }) {
             onChange={handleChange}
           />
         </Box>
+
         {/* Submit Button */}
         <Button variant="contained" type="submit" aria-label="Submit">
           {textAndTagsState.buttonTxt}

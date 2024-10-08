@@ -25,36 +25,41 @@ export default function Modal2({ mealId }) {
   const [reviewData, setReviewData] = useState({
     title: "",
     description: "",
-    meal_id: "",
-    stars: 0,
+    meal_id: mealId,
+    stars: starState,
   });
   const [textAndTagsState, setTextAndTagsState] = useState(reviewTagList);
 
   const handleRatingChange = (selectedRating) => {
-    console.log("Selected Rating:", selectedRating);
     setStarState(selectedRating);
-    // You can also use this value to set state or perform other actions
+    setReviewData((prevData) => ({
+      ...prevData,
+      stars: selectedRating,
+    }));
   };
-
   const handleChange = (e) => {
     const { id, value } = e.target;
     setReviewData((prevData) => ({
       ...prevData,
-      [id]: value,
+      [id]: id === "stars" ? parseInt(value) : value, // Parse stars as integer
     }));
   };
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload on form submission
+    const { title, description, stars, meal_id } = reviewData;
 
     try {
       const response = await fetch(
-        "https://meal-sharing-final-backend.onrender.com/reviews",
+        `https://meal-sharing-final-backend.onrender.com/reviews?title=${encodeURIComponent(
+          title
+        )}&description=${encodeURIComponent(
+          description
+        )}&stars=${stars}&meal_id=${meal_id}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(mealData), // Send the meal data
         }
       );
 
@@ -67,13 +72,16 @@ export default function Modal2({ mealId }) {
           stars: starState,
         });
       } else {
-        alert("Error creating meal.");
+        const errorData = await response.json();
+        console.log("Error response from server:", errorData);
+        alert(`Error creating review: ${errorData.message || "Unknown error"}`);
       }
     } catch (error) {
-      console.error("Error creating meal:", error);
-      alert("Error creating meal.");
+      console.error("Error creating review:", error);
+      alert("Error creating review.");
     }
   };
+
   return (
     <Container
       maxWidth="md"
