@@ -27,6 +27,8 @@ Check out a quick demo of **HomeCook Connection Hub** in action:
 ---
 
 ## 🛠 **Technologies Used**
-- **Next.js**
-- **Node.js**
+- **Next.js**: Frontend
+- **Node.js**: Backend
+- **PostgreSQL** Database
+- **Render.com** Deployment
 
