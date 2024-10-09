@@ -27,6 +27,6 @@ Check out a quick demo of **HomeCook Connection Hub** in action:
 ---
 
 ## 🛠 **Technologies Used**
-- **Next.js**: For fast, server-side rendering and optimized performance.
-- **MongoDB**: A scalable and efficient NoSQL database for storing user and meal data.
-- **Tailwind CSS**: Provides a
+- **Next.js**:
+- **Node.js**:
+
