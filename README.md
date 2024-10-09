@@ -1,0 +1,1 @@
+HomeCook Connection Hub is a dynamic meal-sharing platform built on Next.js that connects home cooks with food enthusiasts. Whether you're a passionate chef looking to host meals or someone eager to enjoy a home-cooked dining experience, HomeCook Connection Hub makes it simple and enjoyable to share and discover great food.
