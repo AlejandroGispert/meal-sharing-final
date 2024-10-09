@@ -117,7 +117,7 @@ export default function Meals() {
       />
 
       {/* Grid for the Meals */}
-      <Box sx={{ flexGrow: 1, padding: 2 }}>
+      <Box sx={{ flexGrow: 1, padding: 2, backgroundColor: "#fbe3c7" }}>
         <div>
           <Button>
             {" "}

@@ -19,11 +19,13 @@
     "@next/font": "^14.2.13",
     "framer-motion": "^11.11.1",
     "i18next": "^23.15.1",
+    "leaflet": "^1.9.4",
     "next": "14.2.11",
     "next-i18next": "^15.3.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-i18next": "^15.0.2"
+    "react-i18next": "^15.0.2",
+    "react-leaflet": "^4.2.1"
   },
   "devDependencies": {
     "typescript": "5.6.2"

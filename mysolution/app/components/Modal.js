@@ -7,17 +7,44 @@ import ReviewBox from "./ReviewBox";
 import { useAuth } from "../../AuthContext";
 import Modal2 from "./Modal2";
 import ReserveBox from "./ReserveBox";
-
 const calculateRemainingReservations = (reservations) => {
-  // Step 1: Sum the total number of guests
+  // Check if reservations is null or undefined
+  if (!Array.isArray(reservations)) {
+    console.error("Invalid reservations data:", reservations);
+    return 0; // Default to 0 if reservations is not a valid array
+  }
+
+  // Step 1: Sum the total number of guests, handling potential null or undefined values
   const totalGuests = reservations.reduce((total, reservation) => {
-    console.log("total number of guests: ", reservation.number_of_guests);
-    return total + reservation.number_of_guests;
+    if (!reservation || reservation.number_of_guests == null) {
+      console.warn(
+        "Invalid reservation or missing number_of_guests:",
+        reservation
+      );
+      return total; // Skip adding guests if invalid reservation or null number_of_guests
+    }
+
+    const numberOfGuests = reservation.number_of_guests;
+    console.log("total number of guests: ", numberOfGuests);
+    return total + numberOfGuests;
   }, 0);
 
-  // Step 2: Get the maximum reservations from the first reservation (assuming it's the same for all)
-  const maxReservations =
-    reservations.length > 0 ? reservations[0].max_reservations : 0;
+  // Step 2: Get the maximum reservations from the first valid reservation
+  const firstValidReservation = reservations.find(
+    (reservation) => reservation && reservation.max_reservations != null
+  );
+  const maxReservations = firstValidReservation
+    ? firstValidReservation.max_reservations
+    : 0;
+
+  if (!firstValidReservation) {
+    console.warn("No valid reservation with max_reservations found.");
+  } else {
+    console.log(
+      "max_reservations from first valid reservation: ",
+      maxReservations
+    );
+  }
 
   // Step 3: Calculate remaining reservations
   const remainingReservations = maxReservations - totalGuests;
@@ -75,15 +102,15 @@ export default function ModalComponent({
       return [];
     }
   };
-
   const fetchAvailable = async (mealId) => {
+    console.log("mealId: " + mealId);
     try {
       const response = await fetch(
         `https://meal-sharing-final-backend.onrender.com/meals/${mealId}/available-reservations`
       );
       if (!response.ok) throw new Error("Failed to fetch availability");
       const data = await response.json();
-      console.log("Fetched availability:", data);
+      console.log("Fetched availability:", data); // Check structure of this data
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error(error);
@@ -136,10 +163,9 @@ export default function ModalComponent({
   };
 
   // Calculate remaining reservations if the meal and availability are fetched
-  const remainingReservations =
-    singleMeal && isAvailable.length > 0
-      ? calculateRemainingReservations(isAvailable)
-      : null;
+  const remainingReservations = isAvailable
+    ? calculateRemainingReservations(isAvailable)
+    : null;
 
   return (
     <>
@@ -193,7 +219,7 @@ export default function ModalComponent({
                     Max Reservations: {singleMeal.max_reservations}
                   </Typography>
                 </Typography>
-                <Typography>Price: {singleMeal.price}</Typography>
+                <Typography>Price: {singleMeal.price} DKK</Typography>
 
                 {/* Display Remaining Reservations */}
                 <Typography variant="body1">

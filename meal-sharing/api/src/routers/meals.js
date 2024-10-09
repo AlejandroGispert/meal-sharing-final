@@ -220,15 +220,30 @@ mealsRouter.get("/:id/available-reservations", async (req, res) => {
       .select(
         "Reservation.id",
         "Reservation.number_of_guests",
-        "Meal.max_reservations" // Selecting the max_reservations from the Meal table
+        "Meal.max_reservations"
       )
-      .leftJoin("Meal", "Reservation.meal_id", "Meal.id") // Joining with the Meal table
-      .where("Reservation.meal_id", mealId);
+      .leftJoin("Meal", "Reservation.meal_id", "Meal.id")
+      .where("Meal.id", mealId); // Ensure you are querying based on the meal ID
 
     if (result.length > 0) {
       res.json(result);
     } else {
-      res.status(404).json({ error: "Meal not found or no reservations yet." });
+      // If no reservations are found, fetch only the max_reservations from the Meal table
+      const mealMaxReservations = await knex("Meal")
+        .select("max_reservations")
+        .where("Meal.id", mealId)
+        .first();
+
+      if (mealMaxReservations) {
+        // If max_reservations is found, return it in a simplified format
+        res.json({
+          max_reservations: mealMaxReservations.max_reservations,
+          number_of_guests: 0, // No guests because no reservations found
+        });
+      } else {
+        // If no meal is found with the given ID
+        res.status(404).json({ error: "Meal not found." });
+      }
     }
   } catch (error) {
     console.error("Error fetching available reservations:", error);

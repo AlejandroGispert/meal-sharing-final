@@ -25,7 +25,7 @@ export default function Meal({ meal, index, handleOpenModal }) {
           Reservations: {meal.max_reservations}
         </Typography>
         <Typography variant="h6" color="textSecondary">
-          Price: {meal.price}
+          Price: {meal.price} DKK
         </Typography>
       </CardContent>
       <Button
