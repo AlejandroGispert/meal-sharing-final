@@ -7,49 +7,37 @@ import ReviewBox from "./ReviewBox";
 import { useAuth } from "../../AuthContext";
 import Modal2 from "./Modal2";
 import ReserveBox from "./ReserveBox";
-const calculateRemainingReservations = (reservations) => {
-  // Check if reservations is null or undefined
+
+const calculateRemainingReservations = (
+  reservations,
+  maxReservationsFromMeal
+) => {
+  // Step 1: Check if reservations is a valid array
   if (!Array.isArray(reservations)) {
     console.error("Invalid reservations data:", reservations);
-    return 0; // Default to 0 if reservations is not a valid array
+    return maxReservationsFromMeal || 0; // Return maxReservations if no reservations array
   }
 
-  // Step 1: Sum the total number of guests, handling potential null or undefined values
+  // Step 2: Sum the total number of guests, handle potential null values
   const totalGuests = reservations.reduce((total, reservation) => {
     if (!reservation || reservation.number_of_guests == null) {
       console.warn(
         "Invalid reservation or missing number_of_guests:",
         reservation
       );
-      return total; // Skip adding guests if invalid reservation or null number_of_guests
+      return total;
     }
-
-    const numberOfGuests = reservation.number_of_guests;
-    console.log("total number of guests: ", numberOfGuests);
-    return total + numberOfGuests;
+    return total + reservation.number_of_guests;
   }, 0);
 
-  // Step 2: Get the maximum reservations from the first valid reservation
-  const firstValidReservation = reservations.find(
-    (reservation) => reservation && reservation.max_reservations != null
-  );
-  const maxReservations = firstValidReservation
-    ? firstValidReservation.max_reservations
-    : 0;
+  // Step 3: Get max_reservations from the meal or from the first reservation
+  const maxReservations =
+    maxReservationsFromMeal || reservations[0]?.max_reservations || 0;
 
-  if (!firstValidReservation) {
-    console.warn("No valid reservation with max_reservations found.");
-  } else {
-    console.log(
-      "max_reservations from first valid reservation: ",
-      maxReservations
-    );
-  }
-
-  // Step 3: Calculate remaining reservations
+  // Step 4: Calculate remaining reservations
   const remainingReservations = maxReservations - totalGuests;
 
-  // Ensure the remaining reservations are not negative
+  // Step 5: Ensure remaining reservations are not negative
   return remainingReservations >= 0 ? remainingReservations : 0;
 };
 
@@ -164,9 +152,8 @@ export default function ModalComponent({
 
   // Calculate remaining reservations if the meal and availability are fetched
   const remainingReservations = isAvailable
-    ? calculateRemainingReservations(isAvailable)
+    ? calculateRemainingReservations(isAvailable, singleMeal?.max_reservations)
     : null;
-
   return (
     <>
       {typeof isOpen !== "undefined" && (
@@ -207,6 +194,7 @@ export default function ModalComponent({
                   width={300}
                   height={300}
                   layout="intrinsic"
+                  priority={true}
                 />
                 <Typography id="simple-modal-description" sx={{ mt: 2 }}>
                   Description: {singleMeal.description}
