@@ -7,7 +7,14 @@
 ## 🎥 **Demo Video**
 Check out a quick demo of **HomeCook Connection Hub** in action:
 
-[![Watch the video](https://cdn.loom.com/sessions/thumbnails/1162c2f8bf934a1b9404e4c58d6b0979-with-play.gif)](https://www.loom.com/share/1162c2f8bf934a1b9404e4c58d6b0979)
+<div>
+    <a href="https://www.loom.com/share/1162c2f8bf934a1b9404e4c58d6b0979">
+      <p>Exploring a Our Reservation System - Watch Video</p>
+    </a>
+    <a href="https://www.loom.com/share/1162c2f8bf934a1b9404e4c58d6b0979">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/1162c2f8bf934a1b9404e4c58d6b0979-e699fc87a0529ee8-full-play.gif">
+    </a>
+  </div>
 
 ---## 🚀 **Features**
 - **Discover Local Meals**: Browse meals offered by local home chefs, filtered by cuisine, dietary preferences, or location.
