@@ -1,0 +1,32 @@
+{
+  "name": "mealsharingapp",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@grafana/faro-web-sdk": "^1.10.0",
+    "@grafana/faro-web-tracing": "^1.10.0",
+    "@mui/icons-material": "^6.1.0",
+    "@mui/material": "^6.1.0",
+    "framer-motion": "^11.11.1",
+    "i18next": "^23.15.1",
+    "leaflet": "^1.9.4",
+    "next": "14.2.11",
+    "next-i18next": "^15.3.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-i18next": "^15.0.2",
+    "react-leaflet": "^4.2.1"
+  },
+  "devDependencies": {
+    "typescript": "5.6.2"
+  }
+}
