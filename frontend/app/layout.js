@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Head from "next/head"; // For adding schema markup in the head
 import { AuthProvider, useAuth } from "../AuthContext";
+import { Analytics } from "@vercel/analytics/react";
 import styles from "../app/page.module.css";
 
 const geistSans = localFont({
@@ -57,7 +58,9 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <CheckLoginStatus />
           <Navbar />
-          <main>{children}</main>
+          <main>
+            {children} <Analytics />
+          </main>
           <Footer />
         </AuthProvider>
       </body>

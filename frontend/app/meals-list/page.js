@@ -146,7 +146,7 @@ export default function Meals() {
               sx={{ textAlign: "center", padding: 2 }}
             >
               No meals available.
-              <br /> Try again later
+              <br /> Please try again later as the content is still loading.
             </Typography>
           )}
         </Grid2>
