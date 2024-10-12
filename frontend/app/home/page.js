@@ -51,7 +51,7 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.homeContainer}>
       {/* Background Video */}
       <div className={styles.videoWrapper}>
         <video

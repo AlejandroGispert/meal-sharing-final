@@ -98,7 +98,7 @@ export default function Meals() {
 
   return (
     <div>
-      <div className={styles.header}>
+      <div className={styles.addMealPage}>
         <TextField
           label="Search meal"
           variant="outlined"

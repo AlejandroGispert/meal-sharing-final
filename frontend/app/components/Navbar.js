@@ -45,7 +45,7 @@ export default function Navbar() {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {["Home", "Meals", "Become host", "Add", "About", "Contact"].map(
+        {["Home", "Meals list", "Become host", "Add", "About", "Contact"].map(
           (text) => (
             <ListItem sx={{ marginTop: 4.75 }} button key={text}>
               <Link

@@ -69,7 +69,7 @@ export default function Add() {
 
       <main>
         <Container maxWidth="md">
-          <Box className={styles.header}>
+          <Box className={styles.addMealPage}>
             <Typography variant="h4" component="h1">
               Add Meal
             </Typography>
@@ -81,6 +81,7 @@ export default function Add() {
             component="form"
             sx={{ mt: 4, pt: 0, pl: 20, pr: 20 }}
             onSubmit={handleSubmit} // Bind handleSubmit to form submit
+            className={styles.addMealPageItems}
           >
             {/* Input for Meal Name */}
             <Box sx={{ mb: 3 }}>

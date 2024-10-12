@@ -69,24 +69,9 @@ export default function BecomeHost() {
         <Container maxWidth="lg" className={styles.becomeHostSection}>
           {/* Map Section */}
 
-          <Map city={city} />
-
           {/* Become a Host Form Section */}
 
-          <Box
-            sx={{
-              width: "500px",
-              padding: 3,
-              backgroundColor: "#f5f5f5",
-              borderRadius: "8px",
-              boxShadow: 3,
-              position: "absolute",
-              top: "40px",
-              right: "2px",
-              margin: "2px",
-            }}
-            onSubmit={handleSubmit}
-          >
+          <Box onSubmit={handleSubmit} className={styles.becomeHostSectionForm}>
             <Typography variant="h4" gutterBottom>
               Become a Host
             </Typography>
@@ -153,6 +138,7 @@ export default function BecomeHost() {
               </Button>
             </form>
           </Box>
+          <Map city={city} />
         </Container>
       </main>
     </div>
