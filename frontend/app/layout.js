@@ -58,7 +58,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <CheckLoginStatus />
           <Navbar />
-          <main>
+          <main className={styles.main}>
             {children} <Analytics />
           </main>
           <Footer />

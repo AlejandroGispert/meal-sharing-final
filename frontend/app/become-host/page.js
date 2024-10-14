@@ -66,80 +66,80 @@ export default function BecomeHost() {
       </Head>
 
       <main>
-        <Container maxWidth="lg" className={styles.becomeHostSection}>
-          {/* Map Section */}
+        {/* <Container maxWidth="lg" className={styles.becomeHostSection}> */}
+        {/* Map Section */}
 
-          {/* Become a Host Form Section */}
+        {/* Become a Host Form Section */}
 
-          <Box onSubmit={handleSubmit} className={styles.becomeHostSectionForm}>
-            <Typography variant="h4" gutterBottom>
-              Become a Host
-            </Typography>
+        <Box onSubmit={handleSubmit} className={styles.becomeHostSectionForm}>
+          <Typography variant="h4" gutterBottom>
+            Become a Host
+          </Typography>
 
-            <form>
-              <TextField
-                id="full_name"
-                label="Full Name*"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                onChange={handleChange}
-              />
-              <TextField
-                id="email"
-                label="Email*"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                onChange={handleChange}
-              />
-              <TextField
-                id="password"
-                label="Password*"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                onChange={handleChange}
-              />
-              <TextField
-                id="phone"
-                label="Phone Number"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                onChange={handleChange}
-              />
-              <TextField
-                id="address"
-                label="City"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                onChange={handleChange}
-              />
-              <TextField
-                id="details"
-                label="Meal Details"
-                variant="outlined"
-                multiline
-                rows={4}
-                fullWidth
-                margin="normal"
-                onChange={handleChange}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{ mt: 2 }}
-              >
-                Submit
-              </Button>
-            </form>
-          </Box>
-          <Map city={city} />
-        </Container>
+          <form>
+            <TextField
+              id="full_name"
+              label="Full Name*"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              onChange={handleChange}
+            />
+            <TextField
+              id="email"
+              label="Email*"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              onChange={handleChange}
+            />
+            <TextField
+              id="password"
+              label="Password*"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              onChange={handleChange}
+            />
+            <TextField
+              id="phone"
+              label="Phone Number"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              onChange={handleChange}
+            />
+            <TextField
+              id="address"
+              label="City"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              onChange={handleChange}
+            />
+            <TextField
+              id="details"
+              label="Meal Details"
+              variant="outlined"
+              multiline
+              rows={4}
+              fullWidth
+              margin="normal"
+              onChange={handleChange}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              Submit
+            </Button>
+          </form>
+        </Box>
+        <Map city={city} />
+        {/* </Container> */}
       </main>
     </div>
   );

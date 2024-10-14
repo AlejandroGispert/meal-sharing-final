@@ -171,12 +171,17 @@
   background-color: grey;
   height: fit-content;
 }
+.main {
+  margin: 0;
+  padding: 0;
+}
 
 .becomeHostSection {
   background-color: #16f5b7;
   text-align: center;
-  margin-bottom: 4px;
+  margin: 0 0 4px 0;
   padding: 0;
+  width: 100%;
 }
 .becomeHostSectionForm {
   width: 500px;

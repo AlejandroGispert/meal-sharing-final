@@ -54,6 +54,7 @@ export default function Meals() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortedState, setSortedState] = useState("desc");
   const [statusState, setStatusState] = useState("Active");
+  const [loading, setLoading] = useState(true);
 
   const handleSearchClick = async () => {
     try {
@@ -64,6 +65,20 @@ export default function Meals() {
       console.log(selectedMeals);
     } catch (err) {
       console.error("Error searching meals:", err);
+    }
+  };
+
+  const handleClear = async () => {
+    try {
+      async function waiting() {
+        setSearchTerm("");
+      }
+      await waiting();
+      const selectedMeals = await search(searchTerm, sortedState);
+
+      setMeals(selectedMeals);
+    } catch (err) {
+      console.error("Error clearing meals:", err);
     }
   };
   const handleSorting = async (direction) => {
@@ -86,10 +101,13 @@ export default function Meals() {
   useEffect(() => {
     const getData = async () => {
       try {
+        setLoading(true);
         const data = await fetchData(sortedState);
         setMeals(data); // Set the fetched meals array directly
       } catch (error) {
         console.error("Error fetching meals:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -105,7 +123,10 @@ export default function Meals() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Button onClick={handleSearchClick}>search</Button>
+        <div>
+          <Button onClick={handleSearchClick}>search</Button>
+          <Button onClick={handleClear}>clear</Button>
+        </div>
       </div>
 
       {/* The Modal component */}
@@ -128,28 +149,33 @@ export default function Meals() {
             <ArrowDownwardIcon onClick={() => handleSorting("desc")} />
           </Button>
         </div>
-        <Grid2 className={styles.grid} container spacing={6}>
-          {fetchedMeals.length > 0 ? (
-            fetchedMeals.map((meal, index) => (
-              <Grid2 item xs={12} sm={6} md={3} key={index}>
-                <Meal
-                  meal={meal}
-                  index={index}
-                  handleOpenModal={handleOpenModal}
-                />
-              </Grid2>
-            ))
-          ) : (
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ textAlign: "center", padding: 2 }}
-            >
-              No meals available.
-              <br /> Please try again later as the content is still loading.
-            </Typography>
-          )}
-        </Grid2>
+
+        {loading ? (
+          <Typography>Loading data...</Typography> // Display loading spinner
+        ) : (
+          <Grid2 className={styles.grid} container spacing={6}>
+            {fetchedMeals.length > 0 ? (
+              fetchedMeals.map((meal, index) => (
+                <Grid2 item xs={12} sm={6} md={3} key={index}>
+                  <Meal
+                    meal={meal}
+                    index={index}
+                    handleOpenModal={handleOpenModal}
+                  />
+                </Grid2>
+              ))
+            ) : (
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ textAlign: "center", padding: 2 }}
+              >
+                No meals available.
+                <br /> Please try again later as the content is still loading.
+              </Typography>
+            )}
+          </Grid2>
+        )}
       </Box>
     </div>
   );
