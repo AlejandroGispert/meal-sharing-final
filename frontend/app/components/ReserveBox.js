@@ -1,13 +1,9 @@
 import * as React from "react";
-import Head from "next/head";
-import Image from "next/image";
+import { useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button, TextField } from "@mui/material";
-import { useState } from "react";
-import Switch from "@mui/material/Switch";
-import StarRating from "./StarRating";
 import styles from "../page.module.css";
 
 const reservationTagList = {
@@ -20,8 +16,6 @@ const reservationTagList = {
 };
 
 export default function ReserveBox({ mealId }) {
-  const [mealOrReviewState, setMealOrReviewState] = useState(true);
-
   const [reservationData, setReservationData] = useState({
     number_of_guests: "",
     contact_phonenumber: "",
@@ -29,6 +23,8 @@ export default function ReserveBox({ mealId }) {
     contact_name: "",
     contact_email: "",
   });
+
+  const [errors, setErrors] = useState({});
 
   const [textAndTagsState, setTextAndTagsState] = useState(reservationTagList);
 
@@ -44,23 +40,58 @@ export default function ReserveBox({ mealId }) {
     const { id, value } = e.target;
     setReservationData((prevData) => ({
       ...prevData,
-      [id]:
-        id === "meal_id" || id === "number_of_guests" ? parseInt(value) : value,
+      [id]: id === "number_of_guests" ? parseInt(value) : value,
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload on form submission
+  // Validation logic
+  const validateForm = () => {
+    const newErrors = {};
 
-    // Basic form validation
+    // Validate name (non-empty, at least 2 characters)
     if (
       !reservationData.contact_name ||
-      !reservationData.contact_email ||
-      !reservationData.contact_phonenumber ||
-      !reservationData.number_of_guests ||
-      !reservationData.meal_id
+      reservationData.contact_name.length < 2
     ) {
-      alert("Please fill in all the fields.");
+      newErrors.contact_name = "Name must be at least 2 characters long.";
+    }
+
+    // Validate email (simple regex for valid email format)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (
+      !reservationData.contact_email ||
+      !emailRegex.test(reservationData.contact_email)
+    ) {
+      newErrors.contact_email = "Please enter a valid email address.";
+    }
+
+    // Validate phone number (basic regex for phone format)
+    const phoneRegex = /^\+?[\d\s\-()]{7,}$/;
+    if (
+      !reservationData.contact_phonenumber ||
+      !phoneRegex.test(reservationData.contact_phonenumber)
+    ) {
+      newErrors.contact_phonenumber = "Please enter a valid phone number.";
+    }
+
+    // Validate number of guests (must be a positive integer greater than 0)
+    if (
+      !reservationData.number_of_guests ||
+      reservationData.number_of_guests <= 0
+    ) {
+      newErrors.number_of_guests =
+        "Please enter a valid number of guests (at least 1).";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate the form before submitting
+    if (!validateForm()) {
       return;
     }
 
@@ -118,6 +149,8 @@ export default function ReserveBox({ mealId }) {
             required
             aria-label={textAndTagsState.tag1}
             onChange={handleChange}
+            error={!!errors.contact_name}
+            helperText={errors.contact_name}
           />
         </Box>
 
@@ -132,6 +165,8 @@ export default function ReserveBox({ mealId }) {
             required
             aria-label={textAndTagsState.tag2}
             onChange={handleChange}
+            error={!!errors.contact_email}
+            helperText={errors.contact_email}
           />
         </Box>
 
@@ -145,6 +180,8 @@ export default function ReserveBox({ mealId }) {
             required
             aria-label={textAndTagsState.tag3}
             onChange={handleChange}
+            error={!!errors.contact_phonenumber}
+            helperText={errors.contact_phonenumber}
           />
         </Box>
 
@@ -158,6 +195,8 @@ export default function ReserveBox({ mealId }) {
             required
             aria-label={textAndTagsState.tag4}
             onChange={handleChange}
+            error={!!errors.number_of_guests}
+            helperText={errors.number_of_guests}
           />
         </Box>
 

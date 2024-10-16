@@ -91,7 +91,7 @@ export default function SingleMeal() {
                     color="primary"
                     onClick={handleClick}
                   >
-                    more info {meal.id}
+                    more info
                   </Button>
                 </Card>
               </Grid2>

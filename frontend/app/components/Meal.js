@@ -34,7 +34,7 @@ export default function Meal({ meal, index, handleOpenModal }) {
         color="primary"
         onClick={() => handleOpenModal(meal.id)} // Fix here: Pass function to onClick
       >
-        See meal#{meal.id}
+        See details
       </Button>
     </Card>
   );

@@ -18,6 +18,8 @@ export default function Add() {
     max_reservations: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setMealData((prevData) => ({
@@ -26,8 +28,65 @@ export default function Add() {
     }));
   };
 
+  // Validate fields before submitting
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate Meal Name
+    if (!mealData.title.trim()) {
+      newErrors.title = "Meal Name is required.";
+    } else if (mealData.title.length < 3 || mealData.title.length > 50) {
+      newErrors.title = "Meal Name must be between 3 and 50 characters.";
+    }
+
+    // Validate Description
+    if (!mealData.description.trim()) {
+      newErrors.description = "Description is required.";
+    } else if (mealData.description.length < 10) {
+      newErrors.description =
+        "Description must be at least 10 characters long.";
+    }
+
+    // Validate Location
+    if (!mealData.location.trim()) {
+      newErrors.location = "Place is required.";
+    }
+
+    // Validate Price
+    const priceValue = parseFloat(mealData.price);
+    if (
+      !mealData.price ||
+      isNaN(priceValue) ||
+      priceValue <= 0 ||
+      priceValue >= 3000
+    ) {
+      newErrors.price = "Price must be a positive number less than 3000.";
+    }
+
+    // Validate Max Reservations
+    const maxReservationsValue = parseInt(mealData.max_reservations);
+    if (
+      !mealData.max_reservations ||
+      isNaN(maxReservationsValue) ||
+      maxReservationsValue <= 0 ||
+      maxReservationsValue > 500
+    ) {
+      newErrors.max_reservations =
+        "Max Reservations must be a positive integer up to 500.";
+    }
+
+    setErrors(newErrors);
+
+    // If there are any errors, the form is invalid
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload on form submission
+
+    if (!validateForm()) {
+      return; // Stop form submission if validation fails
+    }
 
     try {
       const response = await fetch(
@@ -94,6 +153,8 @@ export default function Add() {
                 aria-label="Meal Name"
                 value={mealData.title}
                 onChange={handleChange}
+                error={!!errors.title}
+                helperText={errors.title}
               />
             </Box>
 
@@ -110,6 +171,8 @@ export default function Add() {
                 aria-label="Description"
                 value={mealData.description}
                 onChange={handleChange}
+                error={!!errors.description}
+                helperText={errors.description}
               />
             </Box>
 
@@ -124,6 +187,8 @@ export default function Add() {
                 aria-label="Place"
                 value={mealData.location}
                 onChange={handleChange}
+                error={!!errors.location}
+                helperText={errors.location}
               />
             </Box>
 
@@ -139,6 +204,8 @@ export default function Add() {
                 aria-label="Price"
                 value={mealData.price}
                 onChange={handleChange}
+                error={!!errors.price}
+                helperText={errors.price}
               />
             </Box>
 
@@ -154,6 +221,8 @@ export default function Add() {
                 aria-label="Max Reservations"
                 value={mealData.max_reservations}
                 onChange={handleChange}
+                error={!!errors.max_reservations}
+                helperText={errors.max_reservations}
               />
             </Box>
 
