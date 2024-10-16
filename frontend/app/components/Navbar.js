@@ -45,18 +45,21 @@ export default function Navbar() {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {["Home", "Meals list", "Become host", "Add", "About", "Contact"].map(
-          (text) => (
-            <ListItem sx={{ marginTop: 4.75 }} button key={text}>
-              <Link
-                href={`/${text.toLowerCase().replace(/\s+/g, "-")}`}
-                passHref
-              >
-                <ListItemText primary={text} />
-              </Link>
-            </ListItem>
-          )
-        )}
+        {[
+          "Home",
+          "Login",
+          "Meals list",
+          "Become host",
+          "Add",
+          "About",
+          "Contact",
+        ].map((text) => (
+          <ListItem sx={{ marginTop: 4.75 }} button key={text}>
+            <Link href={`/${text.toLowerCase().replace(/\s+/g, "-")}`} passHref>
+              <ListItemText primary={text} />
+            </Link>
+          </ListItem>
+        ))}
       </List>
       <Divider />
     </Box>
