@@ -1,4 +1,4 @@
-#HomeCook Connection Hub 🍽️
+# HomeCook Connection Hub 🍽️
 
 Welcome to my **Meal Sharing App**! This web application allows users to share meals with friends, family, or strangers. You can host a meal event, browse available meal offerings, or sign up to attend a meal. It's a simple and fun way to bring people together over shared meals.
 
@@ -14,7 +14,7 @@ Welcome to my **Meal Sharing App**! This web application allows users to share m
 
 ## Video-Description
 
-<div style="position: relative; padding-bottom: 56.975505857295%; height: 0;"><iframe src="https://www.loom.com/embed/1162c2f8bf934a1b9404e4c58d6b0979?sid=1fe85f8a-b4ab-402f-8ba5-5020ce642b16" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+[Watch the Demo on Loom](https://www.loom.com/embed/1162c2f8bf934a1b9404e4c58d6b0979?sid=1fe85f8a-b4ab-402f-8ba5-5020ce642b16)
 
 ## Features
 
