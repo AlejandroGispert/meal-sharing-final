@@ -14,7 +14,7 @@ Welcome to my **Meal Sharing App**! This web application allows users to share m
 
 ## Video-Description
 
-[Watch the Demo on Loom](https://www.loom.com/embed/1162c2f8bf934a1b9404e4c58d6b0979?sid=1fe85f8a-b4ab-402f-8ba5-5020ce642b16)
+[![Watch the Demo on Loom](https://cdn.loom.com/sessions/thumbnails/1162c2f8bf934a1b9404e4c58d6b0979-e699fc87a0529ee8-full-play.gif)](https://www.loom.com/embed/1162c2f8bf934a1b9404e4c58d6b0979?sid=1fe85f8a-b4ab-402f-8ba5-5020ce642b16)
 
 ## Features
 
