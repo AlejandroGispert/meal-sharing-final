@@ -37,9 +37,13 @@ This app leverages a modern web development stack:
 
 ## Installation
 
+```bash
 npm install
+```
 
 ## Usage
 
+```bash
 cd frontend/app
 npm run dev
+```
