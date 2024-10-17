@@ -19,6 +19,7 @@ const reviewTagList = {
   tag3: "Stars",
   buttonTxt: "Submit",
 };
+
 export default function Modal2({ mealId }) {
   const [mealOrReviewState, setMealOrReviewState] = useState(true);
   const [starState, setStarState] = useState(0);
@@ -28,6 +29,7 @@ export default function Modal2({ mealId }) {
     meal_id: mealId,
     stars: starState,
   });
+  const [errors, setErrors] = useState({}); // State to track validation errors
   const [textAndTagsState, setTextAndTagsState] = useState(reviewTagList);
 
   const handleRatingChange = (selectedRating) => {
@@ -37,6 +39,7 @@ export default function Modal2({ mealId }) {
       stars: selectedRating,
     }));
   };
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setReviewData((prevData) => ({
@@ -44,8 +47,43 @@ export default function Modal2({ mealId }) {
       [id]: id === "stars" ? parseInt(value) : value, // Parse stars as integer
     }));
   };
+
+  // Validation function
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate title
+    if (!reviewData.title.trim()) {
+      newErrors.title = "Title is required.";
+    } else if (reviewData.title.length < 3 || reviewData.title.length > 50) {
+      newErrors.title = "Title must be between 3 and 50 characters.";
+    }
+
+    // Validate description
+    if (!reviewData.description.trim()) {
+      newErrors.description = "Description is required.";
+    } else if (reviewData.description.length < 10) {
+      newErrors.description =
+        "Description must be at least 10 characters long.";
+    }
+
+    // Validate stars
+    if (reviewData.stars === 0) {
+      newErrors.stars = "You must select a rating.";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload on form submission
+
+    if (!validateForm()) {
+      return; // Stop form submission if validation fails
+    }
+
     const { title, description, stars, meal_id } = reviewData;
 
     try {
@@ -69,8 +107,10 @@ export default function Modal2({ mealId }) {
           title: "",
           description: "",
           meal_id: mealId,
-          stars: starState,
+          stars: 0,
         });
+        setStarState(0); // Reset star rating
+        setErrors({}); // Clear errors
       } else {
         const errorData = await response.json();
         console.log("Error response from server:", errorData);
@@ -87,22 +127,15 @@ export default function Modal2({ mealId }) {
       maxWidth="md"
       sx={{
         mt: 5,
-        height: "900px", // Set fixed height to 500 pixels
+        height: "900px", // Set fixed height
         overflowY: "auto",
       }}
     >
       <Typography variant="h5" component="h2">
-        {/* Add meal */}
-        {/* <Switch
-              checked={mealOrReviewState}
-              onChange={handleSwitch}
-              name="mealOrReviewState"
-              color="primary"
-            /> */}
         Add Review {<StarRating onRatingChange={handleRatingChange} />}
       </Typography>
       <Box component="form" sx={{ mt: 4 }} onSubmit={handleSubmit}>
-        {/* Input for Meal Name */}
+        {/* Input for Title */}
         <Box sx={{ mb: 3 }}>
           <label htmlFor="title">{textAndTagsState.tag1}</label>
           <TextField
@@ -111,7 +144,10 @@ export default function Modal2({ mealId }) {
             fullWidth
             required
             aria-label={textAndTagsState.tag1}
+            value={reviewData.title}
             onChange={handleChange}
+            error={!!errors.title}
+            helperText={errors.title}
           />
         </Box>
 
@@ -126,9 +162,19 @@ export default function Modal2({ mealId }) {
             rows={4}
             required
             aria-label={textAndTagsState.tag2}
+            value={reviewData.description}
             onChange={handleChange}
+            error={!!errors.description}
+            helperText={errors.description}
           />
         </Box>
+
+        {/* Error message for Stars */}
+        {errors.stars && (
+          <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+            {errors.stars}
+          </Typography>
+        )}
 
         {/* Submit Button */}
         <Button variant="contained" type="submit" aria-label="Submit">

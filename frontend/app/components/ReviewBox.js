@@ -22,32 +22,6 @@ export default function ReviewsModal({ reviews }) {
     );
   };
 
-  // Function to validate reviews
-  const validateReview = (review) => {
-    const errors = [];
-
-    // Validate review title (non-empty, reasonable length)
-    if (!review.title || review.title.length < 3 || review.title.length > 100) {
-      errors.push("Review title must be between 3 and 100 characters.");
-    }
-
-    // Validate review description (non-empty)
-    if (!review.description || review.description.length < 5) {
-      errors.push("Review description must be at least 5 characters long.");
-    }
-
-    // Validate rating (between 1 and 5)
-    if (
-      typeof review.stars !== "number" ||
-      review.stars < 1 ||
-      review.stars > 5
-    ) {
-      errors.push("Review rating must be a number between 1 and 5.");
-    }
-
-    return errors;
-  };
-
   return (
     <Box
       sx={{
@@ -71,9 +45,7 @@ export default function ReviewsModal({ reviews }) {
 
       {reviews && reviews.length > 0 ? (
         reviews.map((review, index) => {
-          const errors = validateReview(review);
-
-          return errors.length === 0 ? (
+          return (
             <Box
               key={index}
               sx={{
@@ -101,10 +73,6 @@ export default function ReviewsModal({ reviews }) {
                 </Typography>
               )}
             </Box>
-          ) : (
-            <Typography key={index} sx={{ color: "red", mb: 2 }}>
-              Invalid review: {errors.join(" ")}
-            </Typography>
           );
         })
       ) : (

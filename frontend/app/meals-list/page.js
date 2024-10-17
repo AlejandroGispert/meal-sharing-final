@@ -11,6 +11,7 @@ import Modal from "../components/Modal";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Meal from "../components/Meal";
+import CircularProgress from "@mui/material/CircularProgress";
 import styles from "../page.module.css";
 
 const fetchData = async (sortedState) => {
@@ -151,7 +152,11 @@ export default function Meals() {
         </div>
 
         {loading ? (
-          <Typography>Loading data...</Typography> // Display loading spinner
+          <Box className={styles.loadingState}>
+            <Typography>
+              Loading data... <CircularProgress />
+            </Typography>{" "}
+          </Box>
         ) : (
           <Grid2 className={styles.grid} container spacing={6}>
             {fetchedMeals.length > 0 ? (

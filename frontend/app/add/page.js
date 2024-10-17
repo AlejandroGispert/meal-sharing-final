@@ -7,6 +7,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
+import { MenuItem, Select, InputLabel, FormControl } from "@mui/material"; // Import necessary components
+
 import styles from "../page.module.css";
 
 export default function Add() {
@@ -15,8 +17,18 @@ export default function Add() {
     description: "",
     location: "",
     price: "",
+
     max_reservations: "",
   });
+
+  // Update the handleChange function to handle both the price and the currency
+  const handleCurrencyChange = (e) => {
+    const { value } = e.target;
+    setMealData((prevData) => ({
+      ...prevData,
+      currency: value, // Update the currency field
+    }));
+  };
 
   const [errors, setErrors] = useState({});
 
@@ -194,19 +206,37 @@ export default function Add() {
 
             {/* Input for Price */}
             <Box sx={{ mb: 3 }}>
-              <label htmlFor="price">Price</label>
+              <label htmlFor="price">Price in DKK</label>
               <TextField
                 id="price"
                 type="number"
                 variant="outlined"
                 fullWidth
                 required
+                sx={{ flex: 1 }}
                 aria-label="Price"
                 value={mealData.price}
                 onChange={handleChange}
                 error={!!errors.price}
                 helperText={errors.price}
               />
+              {/* Select for Currency */}
+              {/* <FormControl sx={{ minWidth: 100, ml: 2 }}>
+                <InputLabel id="currency-label">Currency</InputLabel>
+                <Select
+                  labelId="currency-label"
+                  id="currency"
+                  value={mealData.currency}
+                  onChange={handleCurrencyChange}
+                  label="Currency"
+                >
+                  <MenuItem value="DKK">DKK</MenuItem>
+                  <MenuItem value="USD">USD</MenuItem>
+                  <MenuItem value="EUR">EUR</MenuItem>
+      
+                </Select>
+              </FormControl> 
+              */}
             </Box>
 
             {/* Input for Max Reservations */}

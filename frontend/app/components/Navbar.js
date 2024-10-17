@@ -47,14 +47,11 @@ export default function Navbar() {
       <List>
         {["Home", "Login", "Meals list", "Become host", "About", "Contact"].map(
           (text) => (
-            <ListItem sx={{ marginTop: 4.75 }} button key={text}>
-              <Link
-                href={`/${text.toLowerCase().replace(/\s+/g, "-")}`}
-                passHref
-              >
+            <Link href={`/${text.toLowerCase().replace(/\s+/g, "-")}`} passHref>
+              <ListItem sx={{ marginTop: 4.75 }} button key={text}>
                 <ListItemText primary={text} />
-              </Link>
-            </ListItem>
+              </ListItem>
+            </Link>
           )
         )}
       </List>
