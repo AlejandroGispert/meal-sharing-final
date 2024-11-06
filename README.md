@@ -47,3 +47,10 @@ npm install
 cd frontend/app
 npm run dev
 ```
+
+resources
+[mexican](https://github.com/user-attachments/assets/5bad9577-d188-468a-86a8-04a59ce6fd87)
+[camp](https://github.com/user-attachments/assets/d8e188f6-0353-4619-9841-7e8610ac80d8)
+[pizza](https://github.com/user-attachments/assets/d8dac900-d07e-42d4-b92d-5b233ffa20e0)
+
+
