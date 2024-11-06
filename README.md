@@ -33,7 +33,7 @@ This app leverages a modern web development stack:
 - **Frontend**: Next.js
 - **Database**: PostgreSQL, with PGAdmin.
 - **Styling**: Material UI
-- **Deployment**: Render.com
+- **Deployment**: Render.com, supabase
 
 ## Installation
 
