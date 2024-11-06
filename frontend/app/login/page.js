@@ -7,19 +7,24 @@ import {
   Container,
   Box,
   Grid2,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../AuthContext";
+import Dashboard from "../dashboard/page";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // State for Snackbar message
   const router = useRouter();
 
-  const { login } = useAuth(); // Extract login directly here
+  const { login } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,7 +33,6 @@ export default function Login() {
     setError("");
 
     try {
-      // Fetch the hosts from the database
       const response = await fetch(
         "https://meal-sharing-final-backend.onrender.com/hosts"
       );
@@ -44,23 +48,35 @@ export default function Login() {
       if (user) {
         // Successful login logic here
         console.log("Login successful:", user.full_name);
-        alert("Login successful! " + user.full_name);
 
-        // Here, you can login the user
-        // const userData = { full_name: user.full_name, id: user.id };
         login(user.full_name);
+        setSnackbarMessage(`Login successful! ${user.full_name}`);
+        setSnackbarOpen(true); // Open snackbar
 
         // Redirect to the dashboard
         router.push(`/dashboard?user=${user.full_name}&id=${user.id}`);
+        <Dashboard />;
       } else {
         setError("Invalid email or password");
+        setSnackbarMessage("Invalid email or password");
+        setSnackbarOpen(true); // Open snackbar for error
       }
     } catch (error) {
       console.error("Error fetching hosts:", error);
       setError("Failed to fetch user data");
+      setSnackbarMessage("Failed to fetch user data");
+      setSnackbarOpen(true); // Open snackbar for error
     } finally {
       setLoading(false);
     }
+  };
+
+  // Function to close the snackbar
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   return (
@@ -76,8 +92,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        {error && <Typography color="error">{error}</Typography>}{" "}
-        {/* Display error message */}
+        {error && <Typography color="error">{error}</Typography>}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -128,6 +143,22 @@ export default function Login() {
           </Grid2>
         </Box>
       </Box>
+
+      {/* Snackbar for notifications */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }} // Positioning Snackbar to the upper right
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={error ? "error" : "success"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }
